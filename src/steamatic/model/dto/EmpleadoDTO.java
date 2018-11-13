@@ -12,7 +12,7 @@ import java.util.Date;
  *
  * @author Ricardo
  */
-public class Empleado implements Serializable {
+public class EmpleadoDTO implements Serializable {
 
     private int mId_Empleado;
     private String mNombre;
@@ -25,10 +25,10 @@ public class Empleado implements Serializable {
     private String mDireccion;
     private String mPuesto;
 
-    public Empleado() {
+    public EmpleadoDTO() {
     }
 
-    public Empleado(int mId_Empleado, String mNombre, String mApellido_Paterno, String mApellido_Materno, String mOrganismo, String mSexo, String mEstado_Civil, Date mFecha_Nacimiento, String mDireccion, String mPuesto) {
+    public EmpleadoDTO(int mId_Empleado, String mNombre, String mApellido_Paterno, String mApellido_Materno, String mOrganismo, String mSexo, String mEstado_Civil, Date mFecha_Nacimiento, String mDireccion, String mPuesto) {
         this.mId_Empleado = mId_Empleado;
         this.mNombre = mNombre;
         this.mApellido_Paterno = mApellido_Paterno;

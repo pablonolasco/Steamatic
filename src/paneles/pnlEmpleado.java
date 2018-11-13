@@ -17,6 +17,8 @@ public class pnlEmpleado extends javax.swing.JPanel {
     public pnlEmpleado() {
         initComponents();
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

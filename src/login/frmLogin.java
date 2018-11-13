@@ -6,15 +6,23 @@
 package login;
 
 import java.awt.Frame;
+import static java.awt.Frame.MAXIMIZED_BOTH;
+import java.sql.SQLException;
 import java.util.TimerTask;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import steamatic.dao.AdministradorDAO;
+import steamatic.dao.IAdministrador;
+import steamatic.model.dto.AdministradorDTO;
+
+import alertas.*;
+import steamatic.dao.IMensaje;
 
 /**
  *
  * @author proxc
  */
-public class frmLogin extends javax.swing.JFrame {
+public class frmLogin extends javax.swing.JFrame implements IMensaje {
 
     /**
      * Creates new form Home17
@@ -258,10 +266,10 @@ public class frmLogin extends javax.swing.JFrame {
             String pwd = txt_pwd.getText().trim();
 
             if (usuario.equalsIgnoreCase("")) {
-                jOptionPane.showMessageDialog(rootPane, "Campos obligatorio", "Mensaje", JOptionPane.ERROR_MESSAGE);
+                error("Campo Obligatorio!");
                 txt_email.requestFocus();
             } else if (pwd.equalsIgnoreCase("")) {
-                jOptionPane.showMessageDialog(rootPane, "Campos obligatorio", "Mensaje", JOptionPane.ERROR_MESSAGE);
+                error("Campo Obligatorio!");
                 txt_pwd.requestFocus();
             } else {
 
@@ -273,14 +281,45 @@ public class frmLogin extends javax.swing.JFrame {
                     @Override
                     public void run() {
                         //after validating let's show the main Jframe
-                        frmDashboard dashboard = new frmDashboard();
+                        try {
+                            IAdministrador iAdministrador = new AdministradorDAO();
+                            AdministradorDTO adtoResponse;
+                            AdministradorDTO adto = new AdministradorDTO(0, usuario, pwd);
 
-                        dashboard.setExtendedState(MAXIMIZED_BOTH);
-                        dashboard.setVisible(true);
-                        // after successfull loggin let's close the login window
-                        //call:
+                            adtoResponse = iAdministrador.login_admin(adto);
 
-                        dispose();
+                            if (adtoResponse.getmId_Usuario() > 0) {
+                                
+                                frmDashboard dashboard = new frmDashboard();
+
+                                dashboard.setExtendedState(MAXIMIZED_BOTH);
+                                dashboard.setVisible(true);
+                                // after successfull loggin let's close the login window
+                                //call:
+
+                                dispose();
+
+                            } else {
+                                //jOptionPane.showMessageDialog(rootPane, "Verifica usuario/o contraseña", "Mensaje", JOptionPane.ERROR_MESSAGE);
+                                loader.setVisible(false);
+                                login.setVisible(true);
+                                error("Usuario y/o Contraseña incorrecta.");
+
+                                
+
+                            }
+                        } catch (SQLException e) {
+                            jOptionPane.showMessageDialog(rootPane, e.getMessage(), "Mensaje", JOptionPane.ERROR_MESSAGE);
+                            System.err.println("error:" + e.getMessage());
+                            e.printStackTrace();
+
+                        } catch (Exception e) {
+                            jOptionPane.showMessageDialog(rootPane, e.getMessage(), "Mensaje", JOptionPane.ERROR_MESSAGE);
+
+                            System.err.println("error:" + e.getMessage());
+                            e.printStackTrace();
+
+                        }
 
                         //
                         //cool stuff.....
@@ -388,4 +427,26 @@ public class frmLogin extends javax.swing.JFrame {
     private javax.swing.JTextField txt_email;
     private javax.swing.JPasswordField txt_pwd;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void error(String mensaje) {
+        AlertError alertError = new AlertError(this, rootPaneCheckingEnabled);
+        alertError.lbl_mensaje.setText(mensaje);
+        alertError.setVisible(true);
+    }
+
+    @Override
+    public void correcto(String mensaje) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void warning(String mensaje) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void info(String mensaje) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
