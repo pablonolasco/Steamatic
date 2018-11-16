@@ -8,6 +8,7 @@ package paneles;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Vector;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -26,12 +27,43 @@ public class pnlEmpleado extends javax.swing.JPanel {
     private IEmpleado iEmpleado = new EmpleadoDAO();
     private DefaultTableModel model = null;
     private Vector encabezado = new Vector();
+    private EmpleadoDTO empleadoDTO;
 
     /**
      * Creates new form pnlHome
      */
     public pnlEmpleado() {
         initComponents();
+        ocultar_boton(jButton2);
+        ocultar_boton(jButton3);
+        lbl_id.setVisible(false);
+        rSTableMetro1.setVisible(false);
+        limpiar(materialTextField5);
+        limpiar(materialTextField1);
+        limpiar(materialTextField2);
+        limpiar(materialTextField3);
+        limpiar(materialTextField4);
+        limpiar(materialTextField6);
+        limpiar(materialTextField9);
+
+    }
+
+    private void obtener_empleados() {
+        try {
+            model = new DefaultTableModel();
+            model = iEmpleado.consultar_empleados();
+            llenarTabla(vector());
+            this.ocultar_columnas();
+
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        }
 
     }
 
@@ -55,7 +87,13 @@ public class pnlEmpleado extends javax.swing.JPanel {
         return encabezado;
     }
 
+    public void pasar_texto(JTextField field, String valor) {
+        field.setText(valor);
+    }
+
     public void llenarTabla(Vector vector) {
+
+        rSTableMetro1.setVisible(true);
 
         model = new DefaultTableModel(model.getDataVector(), vector) {
             @Override
@@ -63,12 +101,21 @@ public class pnlEmpleado extends javax.swing.JPanel {
                 return false;  // every cell is not editable
             }
         };
+
         rSTableMetro1.setModel(model);
 
     }
 
     private void limpiar(JTextField jTextField) {
         jTextField.setText("");
+    }
+
+    private void ocultar_boton(JButton jButton) {
+        jButton.setVisible(false);
+    }
+
+    private void mostrar_boton(JButton jButton) {
+        jButton.setVisible(true);
     }
 
     private void ocultar_columnas() {
@@ -117,6 +164,7 @@ public class pnlEmpleado extends javax.swing.JPanel {
         materialTextField6 = new principal.MaterialTextField();
         materialTextField9 = new principal.MaterialTextField();
         materialTextField5 = new principal.MaterialTextField();
+        lbl_id = new javax.swing.JLabel();
 
         jLabel4.setText("jLabel4");
 
@@ -170,8 +218,18 @@ public class pnlEmpleado extends javax.swing.JPanel {
         });
 
         jButton2.setText("Modificar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Eliminar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Todo");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -220,6 +278,8 @@ public class pnlEmpleado extends javax.swing.JPanel {
         materialTextField9.setText(" ");
 
         materialTextField5.setText(" ");
+
+        lbl_id.setText("jLabel13");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -280,7 +340,8 @@ public class pnlEmpleado extends javax.swing.JPanel {
                                         .addGap(225, 225, 225)
                                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel8)))
+                                .addComponent(jLabel8))
+                            .addComponent(lbl_id))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(20, 20, 20)
@@ -334,7 +395,9 @@ public class pnlEmpleado extends javax.swing.JPanel {
                         .addComponent(jButton1)
                         .addComponent(jButton2)
                         .addComponent(jButton3)))
-                .addGap(45, 45, 45)
+                .addGap(14, 14, 14)
+                .addComponent(lbl_id)
+                .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
                     .addComponent(jButton6)
@@ -348,53 +411,78 @@ public class pnlEmpleado extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        int anio;
-        Calendar calendar = Calendar.getInstance();
-
-        calendar.setTime(jDateChooser1.getDate());
-        int dia = calendar.get(Calendar.DATE);
-        int mes = calendar.get(Calendar.MONTH);
-
-        anio = calendar.get(Calendar.YEAR);
-        String fecha = String.valueOf(anio + "-" + (mes + 1) + "-" + dia);
-
-        String name = materialTextField1.getText();
-        String aPaterno = materialTextField2.getText();
-        String aMaterno = materialTextField3.getText();
-        String organismo = materialTextField4.getText();
-        String sexo = jComboBox1.getSelectedItem().toString();
-        String estadoCivil = jComboBox2.getSelectedItem().toString();
-        String fecha_nacimiento = fecha;
-        String direccion = materialTextField6.getText();
-        String puesto = materialTextField9.getText();
-
-        if (name.equalsIgnoreCase("") || fecha.equalsIgnoreCase("") || aPaterno.equalsIgnoreCase("") || aMaterno.equalsIgnoreCase("") || calendar.getTime().equals("")) {
-
-            mensajes.error("Campos obligatorios");
+        String fecha = "";
+        String nombre_boton = jButton1.getText().toString();
+        String date = (jDateChooser1.getDate() != null) ? jDateChooser1.getDate().toString() : "";
+        if (date.equalsIgnoreCase("")) {
+            mensajes.error("Campos obligatorios.");
         } else {
-            EmpleadoDTO empleadoDTO = new EmpleadoDTO(0, name, aPaterno,
-                    aMaterno, organismo, sexo, estadoCivil, fecha_nacimiento, direccion, puesto);
+            if (nombre_boton.equalsIgnoreCase("Cancelar")) {
+                limpiar(materialTextField1);
+                limpiar(materialTextField2);
+                limpiar(materialTextField3);
+                limpiar(materialTextField4);
+                limpiar(materialTextField6);
+                limpiar(materialTextField9);
+                jButton1.setText("Registrar");
+                ocultar_boton(jButton2);
+                ocultar_boton(jButton3);
 
-            try {
-                int response;
-                response = iEmpleado.insertar_empleado(empleadoDTO);
-                if (response == 1) {
-                    this.limpiar(materialTextField1);
-                    this.limpiar(materialTextField2);
-                    this.limpiar(materialTextField3);
-                    this.limpiar(materialTextField4);
-                    this.limpiar(materialTextField6);
-                    this.limpiar(materialTextField9);
-                    mensajes.success("Registro Correcto");
+            } else {
+
+                int anio;
+                Calendar calendar = Calendar.getInstance();
+
+                calendar.setTime(jDateChooser1.getDate());
+                int dia = calendar.get(Calendar.DATE);
+                int mes = calendar.get(Calendar.MONTH);
+
+                anio = calendar.get(Calendar.YEAR);
+                fecha = String.valueOf(anio + "-" + (mes + 1) + "-" + dia);
+
+                String name = materialTextField1.getText();
+                String aPaterno = materialTextField2.getText();
+                String aMaterno = materialTextField3.getText();
+                String organismo = materialTextField4.getText();
+                String sexo = jComboBox1.getSelectedItem().toString();
+                String estadoCivil = jComboBox2.getSelectedItem().toString();
+                String fecha_nacimiento = fecha;
+                String direccion = materialTextField6.getText();
+                String puesto = materialTextField9.getText();
+
+                if (name.equalsIgnoreCase("") || aPaterno.equalsIgnoreCase("")
+                        || aMaterno.equalsIgnoreCase("")
+                        || organismo.equalsIgnoreCase("") || direccion.equalsIgnoreCase("")
+                        || puesto.equalsIgnoreCase("")
+                        ) {
+
+                    mensajes.error("Campos obligatorios.");
                 } else {
-                    mensajes.error("Registro Incorrecto");
-                }
+                    empleadoDTO = new EmpleadoDTO(0, name, aPaterno,
+                            aMaterno, organismo, sexo, estadoCivil, fecha_nacimiento, direccion, puesto);
 
-            } catch (SQLException ex) {
-                System.err.println("message:" + ex.getMessage());
-                ex.printStackTrace();
+                    try {
+                        int response;
+                        response = iEmpleado.insertar_empleado(empleadoDTO);
+                        if (response == 1) {
+                            this.limpiar(materialTextField1);
+                            this.limpiar(materialTextField2);
+                            this.limpiar(materialTextField3);
+                            this.limpiar(materialTextField4);
+                            this.limpiar(materialTextField6);
+                            this.limpiar(materialTextField9);
+                            mensajes.success("Registro Correcto");
+                        } else {
+                            mensajes.error("Registro Incorrecto");
+                        }
+
+                    } catch (SQLException ex) {
+                        System.err.println("message:" + ex.getMessage());
+                        ex.printStackTrace();
+                    }
+
+                }
             }
-            ;
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -415,6 +503,7 @@ public class pnlEmpleado extends javax.swing.JPanel {
                 model = iEmpleado.consultar_empleado(dTO);
                 llenarTabla(vector());
                 this.ocultar_columnas();
+                limpiar(materialTextField5);
             }
 
         } catch (SQLException e) {
@@ -431,41 +520,115 @@ public class pnlEmpleado extends javax.swing.JPanel {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        try {
-            model = new DefaultTableModel();
-            model = iEmpleado.consultar_empleados();
-            llenarTabla(vector());
-            this.ocultar_columnas();
-
-        } catch (SQLException e) {
-            System.err.println("message:" + e.getMessage());
-            e.printStackTrace();
-
-        } catch (Exception e) {
-            System.err.println("message:" + e.getMessage());
-            e.printStackTrace();
-
-        }
-
+        this.obtener_empleados();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void rSTableMetro1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rSTableMetro1MouseClicked
         // TODO add your handling code here:
+        int rowIndex = rSTableMetro1.getSelectedRow();
 
         if (evt.getClickCount() == 1) {
-            int rowIndex = rSTableMetro1.getSelectedRow();
             int colIndex = rSTableMetro1.getSelectedColumn();
             String celda = rSTableMetro1.getValueAt(rowIndex, colIndex).toString();
             rSTableMetro1.setToolTipText(celda);
-        }else if(evt.getClickCount() == 2){
-            mensajes.success("ok");
+        } else if (evt.getClickCount() == 2) {
+
+            String id = rSTableMetro1.getValueAt(rowIndex, 0).toString();
+            mostrar_boton(jButton2);
+            mostrar_boton(jButton3);
+            this.pasar_texto(materialTextField1, rSTableMetro1.getValueAt(rowIndex, 1).toString());
+            this.pasar_texto(materialTextField2, rSTableMetro1.getValueAt(rowIndex, 2).toString());
+            this.pasar_texto(materialTextField3, rSTableMetro1.getValueAt(rowIndex, 3).toString());
+            this.pasar_texto(materialTextField4, rSTableMetro1.getValueAt(rowIndex, 4).toString());
+            this.pasar_texto(materialTextField6, rSTableMetro1.getValueAt(rowIndex, 8).toString());
+            this.pasar_texto(materialTextField9, rSTableMetro1.getValueAt(rowIndex, 9).toString());
+            lbl_id.setText(id);
+            jButton1.setText("Cancelar");
+
         }
     }//GEN-LAST:event_rSTableMetro1MouseClicked
 
     private void rSTableMetro1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_rSTableMetro1FocusGained
         // TODO add your handling code here:
-       
+
     }//GEN-LAST:event_rSTableMetro1FocusGained
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        try {
+            jButton1.setText("Registrar");
+
+            empleadoDTO = new EmpleadoDTO();
+            empleadoDTO.setmId_Empleado(Integer.parseInt(lbl_id.getText()));
+
+            int response = iEmpleado.eliminar_empleado(empleadoDTO);
+            if (response > 0) {
+                mensajes.success("Registro eliminado");
+                obtener_empleados();
+            }
+            this.limpiar(materialTextField1);
+            this.limpiar(materialTextField2);
+            this.limpiar(materialTextField3);
+            this.limpiar(materialTextField4);
+            this.limpiar(materialTextField6);
+            this.limpiar(materialTextField9);
+        } catch (NullPointerException e) {
+            mensajes.error("Campos obligatorios");
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+
+        String name = materialTextField1.getText();
+        String aPaterno = materialTextField2.getText();
+        String aMaterno = materialTextField3.getText();
+        String organismo = materialTextField4.getText();
+        String direccion = materialTextField6.getText();
+        String puesto = materialTextField9.getText();
+
+        if (name.equalsIgnoreCase("") || aPaterno.equalsIgnoreCase("")
+                || aMaterno.equalsIgnoreCase("")
+                || organismo.equalsIgnoreCase("") || direccion.equalsIgnoreCase("")
+                || puesto.equalsIgnoreCase("")) {
+
+            mensajes.error("Campos obligatorios");
+        } else {
+            empleadoDTO = new EmpleadoDTO(Integer.parseInt(lbl_id.getText()), name, aPaterno,
+                    aMaterno, organismo, "", "", "", direccion, puesto);
+
+            try {
+                int response;
+                response = iEmpleado.modificar_empleado(empleadoDTO);
+                if (response == 1) {
+                    this.limpiar(materialTextField1);
+                    this.limpiar(materialTextField2);
+                    this.limpiar(materialTextField3);
+                    this.limpiar(materialTextField4);
+                    this.limpiar(materialTextField6);
+                    this.limpiar(materialTextField9);
+                    mensajes.success("Modificacion Correcta");
+                    jButton1.setText("Registrar");
+
+                    obtener_empleados();
+                } else {
+                    mensajes.error("Modificacion Incorrecta");
+                }
+
+            } catch (SQLException ex) {
+                System.err.println("message:" + ex.getMessage());
+                ex.printStackTrace();
+            }
+
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -491,6 +654,7 @@ public class pnlEmpleado extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lbl_id;
     private principal.MaterialTextField materialTextField1;
     private principal.MaterialTextField materialTextField2;
     private principal.MaterialTextField materialTextField3;
