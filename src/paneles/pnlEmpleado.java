@@ -5,20 +5,69 @@
  */
 package paneles;
 
+
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import steamatic.dao.EmpleadoDAO;
+import steamatic.dao.IEmpleado;
+import steamatic.dao.Alerts;
+import steamatic.model.dto.EmpleadoDTO;
+
 /**
  *
  *
  */
 public class pnlEmpleado extends javax.swing.JPanel {
 
+    private Alerts mensajes = new Alerts();
+    private IEmpleado iEmpleado = new EmpleadoDAO();
+    private DefaultTableModel model = null;
+    private Vector encabezado = new Vector();
+
+
     /**
      * Creates new form pnlHome
      */
     public pnlEmpleado() {
         initComponents();
+
     }
-    
-    
+
+    public void llenarTabla() {
+        encabezado.add("ID");
+        encabezado.add("Nombre");
+        encabezado.add("Paterno");
+        encabezado.add("Materno");
+        encabezado.add("Organismo");
+        encabezado.add("Sexo");
+        encabezado.add("Estado_Civil");
+        encabezado.add("Fecha_Nacimiento");
+        encabezado.add("Direccion");
+        encabezado.add("Puesto");
+        model = new DefaultTableModel(model.getDataVector(), encabezado) {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return false;  // every cell is not editable
+            }
+        };
+        jTable1.setModel(model);
+
+    }
+
+    private void limpiar(JTextField jTextField) {
+        jTextField.setText("");
+    }
+
+    private void ocultar_columnas() {
+        //oculta columna del idhabitacion
+        jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
+        jTable1.getColumnModel().getColumn(0).setMinWidth(0);
+        jTable1.getColumnModel().getColumn(0).setPreferredWidth(0);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -58,6 +107,7 @@ public class pnlEmpleado extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
         jLabel4.setText("jLabel4");
 
@@ -83,6 +133,11 @@ public class pnlEmpleado extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel1.setText("Nombre:");
@@ -110,6 +165,11 @@ public class pnlEmpleado extends javax.swing.JPanel {
         jLabel12.setText("Buscar:");
 
         jButton6.setText("Buscar");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Registrar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -122,6 +182,13 @@ public class pnlEmpleado extends javax.swing.JPanel {
 
         jButton3.setText("Eliminar");
 
+        jButton5.setText("Todo");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -129,10 +196,6 @@ public class pnlEmpleado extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 808, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -171,10 +234,6 @@ public class pnlEmpleado extends javax.swing.JPanel {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel10)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
                                                 .addComponent(jLabel2)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -188,7 +247,11 @@ public class pnlEmpleado extends javax.swing.JPanel {
                                                 .addComponent(jButton2)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(jButton3)
-                                                .addGap(43, 43, 43))))))))
+                                                .addGap(43, 43, 43))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel10)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(158, 158, 158)
                         .addComponent(jLabel12)
@@ -197,6 +260,12 @@ public class pnlEmpleado extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(jButton6)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton5)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 808, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -238,7 +307,8 @@ public class pnlEmpleado extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
                     .addComponent(jButton6)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(80, Short.MAX_VALUE))
@@ -247,7 +317,125 @@ public class pnlEmpleado extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        int anio;
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(jDateChooser1.getDate());
+        int dia = calendar.get(Calendar.DATE);
+        int mes = calendar.get(Calendar.MONTH);
+
+        anio = calendar.get(Calendar.YEAR);
+        String fecha = String.valueOf(anio + "-" + (mes + 1) + "-" + dia);
+
+        String name = jTextField1.getText();
+        String aPaterno = jTextField2.getText();
+        String aMaterno = jTextField3.getText();
+        String organismo = jTextField4.getText();
+        String sexo = jComboBox1.getSelectedItem().toString();
+        String estadoCivil = jComboBox2.getSelectedItem().toString();
+        String fecha_nacimiento = fecha;
+        String direccion = jTextField6.getText();
+        String puesto = jTextField9.getText();
+
+        if (name.equalsIgnoreCase("") || fecha.equalsIgnoreCase("") || aPaterno.equalsIgnoreCase("") || aMaterno.equalsIgnoreCase("") || calendar.getTime().equals("")) {
+
+            mensajes.error("Campos obligatorios");
+        } else {
+            EmpleadoDTO empleadoDTO = new EmpleadoDTO(0, name, aPaterno,
+                    aMaterno, organismo, sexo, estadoCivil, fecha_nacimiento, direccion, puesto);
+
+            try {
+                int response;
+                response = iEmpleado.insertar_empleado(empleadoDTO);
+                if (response == 1) {
+                    this.limpiar(jTextField1);
+                    this.limpiar(jTextField2);
+                    this.limpiar(jTextField3);
+                    this.limpiar(jTextField4);
+                    this.limpiar(jTextField6);
+                    this.limpiar(jTextField9);
+                    mensajes.success("Registro Correcto");
+                } else {
+                    mensajes.error("Registro Incorrecto");
+                }
+
+            } catch (SQLException ex) {
+                System.err.println("message:" + ex.getMessage());
+                ex.printStackTrace();
+            }
+            ;
+        }
+
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+
+        if (evt.getClickCount() == 2) {
+            JOptionPane.showMessageDialog(getParent(), "Debes proporcionar los datos", "Error", JOptionPane.ERROR_MESSAGE);
+
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        try {
+            String buscar = jTextField7.getText();
+
+            if (buscar.equalsIgnoreCase("")) {
+                mensajes.error("Campo de busqueda obligatorio");
+
+            } else {
+                EmpleadoDTO dTO = new EmpleadoDTO();
+                dTO.setmNombre(buscar);
+                dTO.setmApellido_Paterno(buscar);
+                model = new DefaultTableModel();
+                model = iEmpleado.consultar_empleado(dTO);
+                llenarTabla();
+                this.ocultar_columnas();
+            }
+
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        }
+
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        try {
+            String buscar = jTextField7.getText();
+
+            if (buscar.equalsIgnoreCase("")) {
+                mensajes.error("Campo de busqueda obligatorio");
+
+            } else {
+                EmpleadoDTO dTO = new EmpleadoDTO();
+                dTO.setmNombre(buscar);
+                dTO.setmApellido_Paterno(buscar);
+                model = new DefaultTableModel();
+                model = iEmpleado.consultar_empleados();
+                llenarTabla();
+                this.ocultar_columnas();
+            }
+
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        }
+
+    }//GEN-LAST:event_jButton5ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -255,6 +443,7 @@ public class pnlEmpleado extends javax.swing.JPanel {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
@@ -281,4 +470,5 @@ public class pnlEmpleado extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField9;
     // End of variables declaration//GEN-END:variables
+
 }

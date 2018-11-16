@@ -5,14 +5,15 @@
  */
 package steamatic.dao;
 
+import java.awt.Component;
+
 /**
  *
  * @author pablonolasco
  */
 public interface IMensaje {
     public abstract void error(String mensaje);
-    public abstract void correcto(String mensaje);
-    public abstract void warning(String mensaje);
-    public abstract void info(String mensaje);
+    public abstract void warning(Component component, String mensaje);
+    public abstract void success(String mensaje);
     
 }

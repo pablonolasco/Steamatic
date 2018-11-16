@@ -21,14 +21,14 @@ public class EmpleadoDTO implements Serializable {
     private String mOrganismo;
     private String mSexo;
     private String mEstado_Civil;
-    private Date mFecha_Nacimiento;
+    private String mFecha_Nacimiento;
     private String mDireccion;
     private String mPuesto;
 
     public EmpleadoDTO() {
     }
 
-    public EmpleadoDTO(int mId_Empleado, String mNombre, String mApellido_Paterno, String mApellido_Materno, String mOrganismo, String mSexo, String mEstado_Civil, Date mFecha_Nacimiento, String mDireccion, String mPuesto) {
+    public EmpleadoDTO(int mId_Empleado, String mNombre, String mApellido_Paterno, String mApellido_Materno, String mOrganismo, String mSexo, String mEstado_Civil, String mFecha_Nacimiento, String mDireccion, String mPuesto) {
         this.mId_Empleado = mId_Empleado;
         this.mNombre = mNombre;
         this.mApellido_Paterno = mApellido_Paterno;
@@ -97,11 +97,11 @@ public class EmpleadoDTO implements Serializable {
         this.mEstado_Civil = mEstado_Civil;
     }
 
-    public Date getmFecha_Nacimiento() {
+    public String getmFecha_Nacimiento() {
         return mFecha_Nacimiento;
     }
 
-    public void setmFecha_Nacimiento(Date mFecha_Nacimiento) {
+    public void setmFecha_Nacimiento(String mFecha_Nacimiento) {
         this.mFecha_Nacimiento = mFecha_Nacimiento;
     }
 

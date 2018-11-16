@@ -6,6 +6,7 @@
 package alertas;
 
 import componente.AWTUtilities;
+import java.awt.Component;
 import java.util.TimerTask;
 import java.util.Timer;
 
@@ -28,6 +29,7 @@ public class AlertError extends javax.swing.JDialog {
         AWTUtilities.setOpaque(this, false);
         Ubicar(0);
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

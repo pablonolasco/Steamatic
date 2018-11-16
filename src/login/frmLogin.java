@@ -16,14 +16,16 @@ import steamatic.dao.IAdministrador;
 import steamatic.model.dto.AdministradorDTO;
 
 import alertas.*;
+import java.awt.Component;
+import steamatic.dao.Alerts;
 import steamatic.dao.IMensaje;
 
 /**
  *
  * @author proxc
  */
-public class frmLogin extends javax.swing.JFrame implements IMensaje {
-
+public class frmLogin extends javax.swing.JFrame  {
+Alerts alerts= new Alerts();
     /**
      * Creates new form Home17
      */
@@ -266,10 +268,10 @@ public class frmLogin extends javax.swing.JFrame implements IMensaje {
             String pwd = txt_pwd.getText().trim();
 
             if (usuario.equalsIgnoreCase("")) {
-                error("Campo Obligatorio!");
+                alerts.error("Campo Obligatorio!");
                 txt_email.requestFocus();
             } else if (pwd.equalsIgnoreCase("")) {
-                error("Campo Obligatorio!");
+                alerts.error("Campo Obligatorio!");
                 txt_pwd.requestFocus();
             } else {
 
@@ -303,7 +305,7 @@ public class frmLogin extends javax.swing.JFrame implements IMensaje {
                                 //jOptionPane.showMessageDialog(rootPane, "Verifica usuario/o contraseña", "Mensaje", JOptionPane.ERROR_MESSAGE);
                                 loader.setVisible(false);
                                 login.setVisible(true);
-                                error("Usuario y/o Contraseña incorrecta.");
+                                alerts.error("Usuario y/o Contraseña incorrecta.");
 
                                 
 
@@ -428,25 +430,4 @@ public class frmLogin extends javax.swing.JFrame implements IMensaje {
     private javax.swing.JPasswordField txt_pwd;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void error(String mensaje) {
-        AlertError alertError = new AlertError(this, rootPaneCheckingEnabled);
-        alertError.lbl_mensaje.setText(mensaje);
-        alertError.setVisible(true);
-    }
-
-    @Override
-    public void correcto(String mensaje) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void warning(String mensaje) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void info(String mensaje) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }
