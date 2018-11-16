@@ -414,19 +414,20 @@ public class pnlEmpleado extends javax.swing.JPanel {
         String fecha = "";
         String nombre_boton = jButton1.getText().toString();
         String date = (jDateChooser1.getDate() != null) ? jDateChooser1.getDate().toString() : "";
-        if (date.equalsIgnoreCase("")) {
-            mensajes.error("Campos obligatorios.");
+        if (nombre_boton.equalsIgnoreCase("Cancelar")) {
+            limpiar(materialTextField1);
+            limpiar(materialTextField2);
+            limpiar(materialTextField3);
+            limpiar(materialTextField4);
+            limpiar(materialTextField6);
+            limpiar(materialTextField9);
+            jButton1.setText("Registrar");
+            ocultar_boton(jButton2);
+            ocultar_boton(jButton3);
+
         } else {
-            if (nombre_boton.equalsIgnoreCase("Cancelar")) {
-                limpiar(materialTextField1);
-                limpiar(materialTextField2);
-                limpiar(materialTextField3);
-                limpiar(materialTextField4);
-                limpiar(materialTextField6);
-                limpiar(materialTextField9);
-                jButton1.setText("Registrar");
-                ocultar_boton(jButton2);
-                ocultar_boton(jButton3);
+            if (date.equalsIgnoreCase("")) {
+                mensajes.error("Campos obligatorios.");
 
             } else {
 
@@ -453,8 +454,7 @@ public class pnlEmpleado extends javax.swing.JPanel {
                 if (name.equalsIgnoreCase("") || aPaterno.equalsIgnoreCase("")
                         || aMaterno.equalsIgnoreCase("")
                         || organismo.equalsIgnoreCase("") || direccion.equalsIgnoreCase("")
-                        || puesto.equalsIgnoreCase("")
-                        ) {
+                        || puesto.equalsIgnoreCase("")) {
 
                     mensajes.error("Campos obligatorios.");
                 } else {
@@ -472,6 +472,7 @@ public class pnlEmpleado extends javax.swing.JPanel {
                             this.limpiar(materialTextField6);
                             this.limpiar(materialTextField9);
                             mensajes.success("Registro Correcto");
+                            obtener_empleados();
                         } else {
                             mensajes.error("Registro Incorrecto");
                         }
