@@ -5,17 +5,36 @@
  */
 package paneles;
 
+import java.sql.SQLException;
+import steamatic.dao.Alerts;
+import steamatic.dao.IProveedor;
+import steamatic.dao.ProveedorDAO;
+import steamatic.model.dto.ProveedorDTO;
+
 /**
  *
- * 
+ *
  */
 public class pnlProveedor extends javax.swing.JPanel {
 
     /**
      * Creates new form pnlHome
      */
+    private Alerts alerts = new Alerts();
+    
     public pnlProveedor() {
         initComponents();
+        this.limpiar();
+    }
+    
+    private void limpiar() {
+        materialTextField1.setText("");
+        materialTextField2.setText("");
+        materialTextField3.setText("");
+        materialTextField4.setText("");
+        materialTextField5.setText("");
+        materialTextField6.setText("");
+        
     }
 
     /**
@@ -103,6 +122,11 @@ public class pnlProveedor extends javax.swing.JPanel {
         jLabel8.setText("Buscar:");
 
         jButton1.setText("Registrar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Todo");
 
@@ -166,8 +190,7 @@ public class pnlProveedor extends javax.swing.JPanel {
                         .addGap(83, 83, 83)
                         .addComponent(jButton3)
                         .addGap(85, 85, 85)
-                        .addComponent(jButton5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jButton5)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -199,8 +222,8 @@ public class pnlProveedor extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton3)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(jButton5)))
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -218,6 +241,8 @@ public class pnlProveedor extends javax.swing.JPanel {
 
     private void rSTableMetro1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_rSTableMetro1FocusGained
         // TODO add your handling code here:
+
+
     }//GEN-LAST:event_rSTableMetro1FocusGained
 
     private void rSTableMetro1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rSTableMetro1MouseClicked
@@ -244,6 +269,47 @@ public class pnlProveedor extends javax.swing.JPanel {
 //
 //        }
     }//GEN-LAST:event_rSTableMetro1MouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+
+        try {
+            String codigo, telefono;
+            String nombre = materialTextField1.getText().toString().trim();
+            codigo = (materialTextField2.getText().toString().trim());
+            String rfc = materialTextField3.getText().toString().trim();
+            String direccion = materialTextField4.getText().toString().trim();
+            telefono = (materialTextField5.getText().toString().trim());
+            String email = materialTextField6.getText().toString().trim();
+            if (nombre.equalsIgnoreCase("") || codigo.equalsIgnoreCase("")
+                    || rfc.equalsIgnoreCase("") || direccion.equalsIgnoreCase("")
+                    || telefono.equalsIgnoreCase("")
+                    || email.equalsIgnoreCase("")) {
+                alerts.error("Campos obligatorios");
+            } else {
+                ProveedorDTO dTO = new ProveedorDTO(0, nombre, Integer.parseInt(codigo),
+                        rfc, direccion, Integer.parseInt(telefono), email, 0);
+                IProveedor iProveedor = new ProveedorDAO();
+                int response = iProveedor.insertar_proveedor(dTO);
+                if (response == 1) {
+                    limpiar();
+                    alerts.success("Registro Correcto");
+                } else {
+                    alerts.error("Registro Incorrecto");
+                }
+            }
+        } catch (NumberFormatException e) {
+            alerts.error("Formato incorrecto de numero");
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
