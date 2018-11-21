@@ -15,6 +15,7 @@ import steamatic.utils.Alerts;
 import steamatic.interfaces.IMetodosFormulario;
 import steamatic.interfaces.IProveedor;
 import steamatic.dao.ProveedorDAO;
+import steamatic.model.dto.EmpleadoDTO;
 import steamatic.model.dto.ProveedorDTO;
 import steamatic.utils.StematicConstants;
 
@@ -192,8 +193,18 @@ public class pnlProveedor extends javax.swing.JPanel implements IMetodosFormular
         });
 
         jButton3.setText("Modificar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Buscar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Eliminar");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -373,6 +384,7 @@ public class pnlProveedor extends javax.swing.JPanel implements IMetodosFormular
                     int response = iProveedor.insertar_proveedor(proveedordTO);
                     if (response == 1) {
                         limpiar();
+                        this.obtener_proveedores();
                         alerts.success(StematicConstants.M_INSERT_SUCCESS);
                     } else {
                         alerts.error(StematicConstants.M_ERROR);
@@ -395,7 +407,7 @@ public class pnlProveedor extends javax.swing.JPanel implements IMetodosFormular
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
         try {
-            String id = lbl_id.getText().toString();
+            String id = lbl_id.getText();
             if (id.equalsIgnoreCase("0")) {
                 alerts.error(StematicConstants.M_OBLIGATE_ID);
             } else {
@@ -429,6 +441,88 @@ public class pnlProveedor extends javax.swing.JPanel implements IMetodosFormular
 
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        
+        try {
+            String codigo, telefono;
+            String boton = jButton1.getText().toString();
+            String nombre = materialTextField1.getText().toString().trim();
+            codigo = (materialTextField2.getText().toString().trim());
+            String rfc = materialTextField3.getText().toString().trim();
+            String direccion = materialTextField4.getText().toString().trim();
+            telefono = (materialTextField5.getText().toString().trim());
+            String email = materialTextField6.getText().toString().trim();
+            String id = lbl_id.getText().toString();
+            if (id.equalsIgnoreCase("0")) {
+                alerts.error(StematicConstants.M_OBLIGATE_ID);
+            }else{    
+
+                if (nombre.equalsIgnoreCase("") || codigo.equalsIgnoreCase("")
+                        || rfc.equalsIgnoreCase("") || direccion.equalsIgnoreCase("")
+                        || telefono.equalsIgnoreCase("")
+                        || email.equalsIgnoreCase("")) {
+                    alerts.error(StematicConstants.M_OBLIGATE);
+                } else {
+                    proveedordTO = new ProveedorDTO(Integer.parseInt(id), nombre, Integer.parseInt(codigo),
+                            rfc, direccion, Integer.parseInt(telefono), email, 0);
+                    int response = iProveedor.update_proveedor(proveedordTO);
+                    if (response == 1) {
+                        limpiar();
+                        this.ocultar_boton(true);
+                        this.obtener_proveedores();
+                        this.jButton1.setText("Registrar");
+                        alerts.success(StematicConstants.M_UPDATE_SUCCESS);
+                    } else {
+                        alerts.error(StematicConstants.M_ERROR);
+                    }
+                }
+            }
+        } catch (NumberFormatException e) {
+            alerts.error("Formato incorrecto de numero");
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        }
+
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+                try {
+            String buscar = materialTextField7.getText();
+
+            if (buscar.equalsIgnoreCase("")) {
+                alerts.error(StematicConstants.M_OBLIGATE_SEARCH);
+
+            } else {
+                proveedordTO = new ProveedorDTO();
+                proveedordTO.setmNombre_Proveedor(buscar);
+                model = new DefaultTableModel();
+                model = iProveedor.get_proveedor(proveedordTO);
+                llenarTabla(vector());
+                this.ocultar_columnas();
+                this.materialTextField7.setText("");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        }
+
+
+    }//GEN-LAST:event_jButton4ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

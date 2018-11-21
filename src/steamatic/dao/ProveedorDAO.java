@@ -25,8 +25,8 @@ public class ProveedorDAO implements IProveedor {
 
     private String SQL_INSERT = StematicConstants.C_INSERT+"Proveedores(Nombre_Proveedor,Codigo,RFC,Direccion,Telefono,E_Mail) "
             + "Values(?,?,?,?,?,?);";
-    private String SQL_DELETE=StematicConstants.C_DELETE+"Proveedores where Id_Proveedores=?";
-    private String SQL_UPDATE = StematicConstants.C_UPDATE+"Proveedores set Nombre_Proveedor=?,Codigo=?,Direccion=?,Telefono=?,E_Mail=?";
+    private String SQL_DELETE=StematicConstants.C_UPDATE+"Proveedores set estatus=0 where Id_Proveedores=?";
+    private String SQL_UPDATE = StematicConstants.C_UPDATE+"Proveedores set Nombre_Proveedor=?, Codigo=?, RFC=?, Direccion=?, Telefono=?, E_Mail=? where Id_Proveedores=?;";
     private String SQL_READ = StematicConstants.C_SELECT+" * from Proveedores where ( Nombre_Proveedor like ? and estatus='1');";
     private String SQL_READ_ALL =StematicConstants.C_SELECT +"* from Proveedores where estatus='1';";
     private PreparedStatement statement;
@@ -109,7 +109,7 @@ public class ProveedorDAO implements IProveedor {
             statement.setString(indice++, dTO.getmDireccion());
             statement.setInt(indice++, dTO.getmTelefono());
             statement.setString(indice++, dTO.getmE_Mail());
-            statement.setInt(indice++, dTO.getmId_Proveedores());
+            statement.setInt(indice, dTO.getmId_Proveedores());
             rows = statement.executeUpdate();
         } catch (SQLException e) {
             System.err.println("message:" + e.getMessage());
