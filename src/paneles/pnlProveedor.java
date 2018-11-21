@@ -6,35 +6,90 @@
 package paneles;
 
 import java.sql.SQLException;
-import steamatic.dao.Alerts;
-import steamatic.dao.IProveedor;
+import java.util.Vector;
+import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import steamatic.utils.Alerts;
+import steamatic.interfaces.IMetodosFormulario;
+import steamatic.interfaces.IProveedor;
 import steamatic.dao.ProveedorDAO;
 import steamatic.model.dto.ProveedorDTO;
+import steamatic.utils.StematicConstants;
 
 /**
  *
  *
  */
-public class pnlProveedor extends javax.swing.JPanel {
+public class pnlProveedor extends javax.swing.JPanel implements IMetodosFormulario {
 
     /**
      * Creates new form pnlHome
      */
     private Alerts alerts = new Alerts();
-    
+    private ProveedorDTO proveedordTO;
+    private IProveedor iProveedor = new ProveedorDAO();
+    private DefaultTableModel model = null;
+    private Vector encabezado = new Vector();
+
     public pnlProveedor() {
         initComponents();
         this.limpiar();
+        this.ocultar_boton(true);
+        this.lbl_id.setVisible(false);
+        this.obtener_proveedores();
     }
-    
-    private void limpiar() {
-        materialTextField1.setText("");
-        materialTextField2.setText("");
-        materialTextField3.setText("");
-        materialTextField4.setText("");
-        materialTextField5.setText("");
-        materialTextField6.setText("");
-        
+
+    public static boolean isNumeric(String str) {
+        try {
+            int i = Integer.parseInt(str);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+
+    }
+
+    private void obtener_proveedores() {
+        try {
+            model = new DefaultTableModel();
+            model = iProveedor.get_proveedores();
+
+            if (model != null) {
+                llenarTabla(vector());
+                this.ocultar_columnas();
+
+            }
+
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        }
+
+    }
+
+    private Vector vector() {
+        try {
+            encabezado.clear();
+            encabezado.add("Id_Proveedores");
+            encabezado.add("Nombre_Proveedor");
+            encabezado.add("Codigo");
+            encabezado.add("RFC");
+            encabezado.add("Direccion");
+            encabezado.add("Telefono");
+            encabezado.add("E_Mail");
+
+        } catch (Exception e) {
+            System.err.println("vector:" + e.getMessage());
+            e.printStackTrace();
+        }
+        return encabezado;
     }
 
     /**
@@ -68,6 +123,7 @@ public class pnlProveedor extends javax.swing.JPanel {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        lbl_id = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -129,12 +185,24 @@ public class pnlProveedor extends javax.swing.JPanel {
         });
 
         jButton2.setText("Todo");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Modificar");
 
         jButton4.setText("Buscar");
 
         jButton5.setText("Eliminar");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        lbl_id.setText("0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -147,15 +215,6 @@ public class pnlProveedor extends javax.swing.JPanel {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(225, 225, 225)
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(materialTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton2))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -183,14 +242,27 @@ public class pnlProveedor extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(materialTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(materialTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 16, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(83, 83, 83)
-                        .addComponent(jButton3)
-                        .addGap(85, 85, 85)
-                        .addComponent(jButton5)))
+                                    .addComponent(materialTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jButton1)
+                                        .addGap(83, 83, 83)
+                                        .addComponent(jButton3)
+                                        .addGap(85, 85, 85)
+                                        .addComponent(jButton5)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lbl_id))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(225, 225, 225)
+                                        .addComponent(jLabel8)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(materialTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton2)))
+                        .addGap(0, 10, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -224,7 +296,9 @@ public class pnlProveedor extends javax.swing.JPanel {
                     .addComponent(jButton1)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jButton5)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton5)
+                            .addComponent(lbl_id))))
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,27 +321,26 @@ public class pnlProveedor extends javax.swing.JPanel {
 
     private void rSTableMetro1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rSTableMetro1MouseClicked
         // TODO add your handling code here:
-//        int rowIndex = rSTableMetro1.getSelectedRow();
-//
-//        if (evt.getClickCount() == 1) {
-//            int colIndex = rSTableMetro1.getSelectedColumn();
-//            String celda = rSTableMetro1.getValueAt(rowIndex, colIndex).toString();
-//            rSTableMetro1.setToolTipText(celda);
-//        } else if (evt.getClickCount() == 2) {
-//
-//            String id = rSTableMetro1.getValueAt(rowIndex, 0).toString();
-//            mostrar_boton(jButton2);
-//            mostrar_boton(jButton3);
-//            this.pasar_texto(materialTextField1, rSTableMetro1.getValueAt(rowIndex, 1).toString());
-//            this.pasar_texto(materialTextField2, rSTableMetro1.getValueAt(rowIndex, 2).toString());
-//            this.pasar_texto(materialTextField3, rSTableMetro1.getValueAt(rowIndex, 3).toString());
-//            this.pasar_texto(materialTextField4, rSTableMetro1.getValueAt(rowIndex, 4).toString());
-//            this.pasar_texto(materialTextField6, rSTableMetro1.getValueAt(rowIndex, 8).toString());
-//            this.pasar_texto(materialTextField9, rSTableMetro1.getValueAt(rowIndex, 9).toString());
-//            lbl_id.setText(id);
-//            jButton1.setText("Cancelar");
-//
-//        }
+        int rowIndex = rSTableMetro1.getSelectedRow();
+
+        if (evt.getClickCount() == 1) {
+            int colIndex = rSTableMetro1.getSelectedColumn();
+            String celda = rSTableMetro1.getValueAt(rowIndex, colIndex).toString();
+            rSTableMetro1.setToolTipText(celda);
+        } else if (evt.getClickCount() == 2) {
+
+            String id = rSTableMetro1.getValueAt(rowIndex, 0).toString();
+            this.ocultar_boton(false);
+            this.pasar_columna_caja(materialTextField1, rSTableMetro1.getValueAt(rowIndex, 1).toString());
+            this.pasar_columna_caja(materialTextField2, rSTableMetro1.getValueAt(rowIndex, 2).toString());
+            this.pasar_columna_caja(materialTextField3, rSTableMetro1.getValueAt(rowIndex, 3).toString());
+            this.pasar_columna_caja(materialTextField4, rSTableMetro1.getValueAt(rowIndex, 4).toString());
+            this.pasar_columna_caja(materialTextField5, rSTableMetro1.getValueAt(rowIndex, 5).toString());
+            this.pasar_columna_caja(materialTextField6, rSTableMetro1.getValueAt(rowIndex, 6).toString());
+            lbl_id.setText(id);
+            jButton1.setText("Cancelar");
+
+        }
     }//GEN-LAST:event_rSTableMetro1MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -275,27 +348,35 @@ public class pnlProveedor extends javax.swing.JPanel {
 
         try {
             String codigo, telefono;
+            String boton = jButton1.getText().toString();
             String nombre = materialTextField1.getText().toString().trim();
             codigo = (materialTextField2.getText().toString().trim());
             String rfc = materialTextField3.getText().toString().trim();
             String direccion = materialTextField4.getText().toString().trim();
             telefono = (materialTextField5.getText().toString().trim());
             String email = materialTextField6.getText().toString().trim();
-            if (nombre.equalsIgnoreCase("") || codigo.equalsIgnoreCase("")
-                    || rfc.equalsIgnoreCase("") || direccion.equalsIgnoreCase("")
-                    || telefono.equalsIgnoreCase("")
-                    || email.equalsIgnoreCase("")) {
-                alerts.error("Campos obligatorios");
+            if (boton.equalsIgnoreCase("Cancelar")) {
+                this.limpiar();
+                this.jButton1.setText("Registrar");
+                this.lbl_id.setText("0");
+                this.ocultar_boton(true);
             } else {
-                ProveedorDTO dTO = new ProveedorDTO(0, nombre, Integer.parseInt(codigo),
-                        rfc, direccion, Integer.parseInt(telefono), email, 0);
-                IProveedor iProveedor = new ProveedorDAO();
-                int response = iProveedor.insertar_proveedor(dTO);
-                if (response == 1) {
-                    limpiar();
-                    alerts.success("Registro Correcto");
+
+                if (nombre.equalsIgnoreCase("") || codigo.equalsIgnoreCase("")
+                        || rfc.equalsIgnoreCase("") || direccion.equalsIgnoreCase("")
+                        || telefono.equalsIgnoreCase("")
+                        || email.equalsIgnoreCase("")) {
+                    alerts.error(StematicConstants.M_OBLIGATE);
                 } else {
-                    alerts.error("Registro Incorrecto");
+                    proveedordTO = new ProveedorDTO(0, nombre, Integer.parseInt(codigo),
+                            rfc, direccion, Integer.parseInt(telefono), email, 0);
+                    int response = iProveedor.insertar_proveedor(proveedordTO);
+                    if (response == 1) {
+                        limpiar();
+                        alerts.success(StematicConstants.M_INSERT_SUCCESS);
+                    } else {
+                        alerts.error(StematicConstants.M_ERROR);
+                    }
                 }
             }
         } catch (NumberFormatException e) {
@@ -310,6 +391,44 @@ public class pnlProveedor extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        try {
+            String id = lbl_id.getText().toString();
+            if (id.equalsIgnoreCase("0")) {
+                alerts.error(StematicConstants.M_OBLIGATE_ID);
+            } else {
+                proveedordTO = new ProveedorDTO();
+                proveedordTO.setmId_Proveedores(Integer.parseInt(id));
+                int response = iProveedor.eliminar_proveedor(proveedordTO);
+                if (response == 1) {
+                    this.limpiar();
+                    this.ocultar_boton(true);
+                    this.jButton1.setText("Registrar");
+                    this.obtener_proveedores();
+                    alerts.success(StematicConstants.M_DELETE_SUCCESS);
+                } else {
+                    alerts.error(StematicConstants.M_ERROR);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        try {
+            this.obtener_proveedores();
+        } catch (Exception e) {
+
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -327,6 +446,7 @@ public class pnlProveedor extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lbl_id;
     private principal.MaterialTextField materialTextField1;
     private principal.MaterialTextField materialTextField2;
     private principal.MaterialTextField materialTextField3;
@@ -336,4 +456,54 @@ public class pnlProveedor extends javax.swing.JPanel {
     private principal.MaterialTextField materialTextField7;
     private rojerusan.RSTableMetro rSTableMetro1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void limpiar() {
+        materialTextField1.setText("");
+        materialTextField2.setText("");
+        materialTextField3.setText("");
+        materialTextField4.setText("");
+        materialTextField5.setText("");
+        materialTextField6.setText("");
+
+    }
+
+    @Override
+    public void llenarTabla(Vector vector) {
+        rSTableMetro1.setVisible(true);
+
+        model = new DefaultTableModel(model.getDataVector(), vector) {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return false;  // every cell is not editable
+            }
+        };
+
+        rSTableMetro1.setModel(model);
+
+    }
+
+    @Override
+    public void ocultar_boton(boolean status) {
+        if (status) {
+            jButton3.setVisible(!status);
+            jButton5.setVisible(!status);
+        } else {
+            jButton3.setVisible(!status);
+            jButton5.setVisible(!status);
+        }
+    }
+
+    @Override
+    public void ocultar_columnas() {
+        //oculta columna del idhabitacion
+        rSTableMetro1.getColumnModel().getColumn(0).setMaxWidth(0);
+        rSTableMetro1.getColumnModel().getColumn(0).setMinWidth(0);
+        rSTableMetro1.getColumnModel().getColumn(0).setPreferredWidth(0);
+    }
+
+    @Override
+    public void pasar_columna_caja(JTextField field, String valor) {
+        field.setText(valor);
+    }
 }

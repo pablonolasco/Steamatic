@@ -5,6 +5,7 @@
  */
 package steamatic.dao;
 
+import steamatic.interfaces.IAdministrador;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

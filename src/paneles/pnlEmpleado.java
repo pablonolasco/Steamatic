@@ -13,9 +13,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import steamatic.dao.EmpleadoDAO;
-import steamatic.dao.IEmpleado;
-import steamatic.dao.Alerts;
+import steamatic.interfaces.IEmpleado;
+import steamatic.utils.Alerts;
 import steamatic.model.dto.EmpleadoDTO;
+import steamatic.utils.StematicConstants;
 
 /**
  *
@@ -45,6 +46,7 @@ public class pnlEmpleado extends javax.swing.JPanel {
         limpiar(materialTextField4);
         limpiar(materialTextField6);
         limpiar(materialTextField9);
+        this.obtener_empleados();
 
     }
 
@@ -279,7 +281,7 @@ public class pnlEmpleado extends javax.swing.JPanel {
 
         materialTextField5.setText(" ");
 
-        lbl_id.setText("jLabel13");
+        lbl_id.setText("0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -427,7 +429,7 @@ public class pnlEmpleado extends javax.swing.JPanel {
 
         } else {
             if (date.equalsIgnoreCase("")) {
-                mensajes.error("Campos obligatorios.");
+                mensajes.error(StematicConstants.M_OBLIGATE);
 
             } else {
 
@@ -456,7 +458,7 @@ public class pnlEmpleado extends javax.swing.JPanel {
                         || organismo.equalsIgnoreCase("") || direccion.equalsIgnoreCase("")
                         || puesto.equalsIgnoreCase("")) {
 
-                    mensajes.error("Campos obligatorios.");
+                    mensajes.error(StematicConstants.M_OBLIGATE);
                 } else {
                     empleadoDTO = new EmpleadoDTO(0, name, aPaterno,
                             aMaterno, organismo, sexo, estadoCivil, fecha_nacimiento, direccion, puesto);
@@ -471,10 +473,10 @@ public class pnlEmpleado extends javax.swing.JPanel {
                             this.limpiar(materialTextField4);
                             this.limpiar(materialTextField6);
                             this.limpiar(materialTextField9);
-                            mensajes.success("Registro Correcto");
+                            mensajes.success(StematicConstants.M_INSERT_SUCCESS);
                             obtener_empleados();
                         } else {
-                            mensajes.error("Registro Incorrecto");
+                            mensajes.error(StematicConstants.M_ERROR);
                         }
 
                     } catch (SQLException ex) {
@@ -494,7 +496,7 @@ public class pnlEmpleado extends javax.swing.JPanel {
             String buscar = materialTextField5.getText();
 
             if (buscar.equalsIgnoreCase("")) {
-                mensajes.error("Campo de busqueda obligatorio");
+                mensajes.error(StematicConstants.M_OBLIGATE_SEARCH);
 
             } else {
                 EmpleadoDTO dTO = new EmpleadoDTO();
@@ -564,7 +566,7 @@ public class pnlEmpleado extends javax.swing.JPanel {
 
             int response = iEmpleado.eliminar_empleado(empleadoDTO);
             if (response > 0) {
-                mensajes.success("Registro eliminado");
+                mensajes.success(StematicConstants.M_DELETE_SUCCESS);
                 obtener_empleados();
             }
             this.limpiar(materialTextField1);
@@ -574,7 +576,7 @@ public class pnlEmpleado extends javax.swing.JPanel {
             this.limpiar(materialTextField6);
             this.limpiar(materialTextField9);
         } catch (NullPointerException e) {
-            mensajes.error("Campos obligatorios");
+            mensajes.error(StematicConstants.M_ERROR);
         } catch (SQLException e) {
             System.err.println("message:" + e.getMessage());
             e.printStackTrace();
@@ -600,7 +602,7 @@ public class pnlEmpleado extends javax.swing.JPanel {
                 || organismo.equalsIgnoreCase("") || direccion.equalsIgnoreCase("")
                 || puesto.equalsIgnoreCase("")) {
 
-            mensajes.error("Campos obligatorios");
+            mensajes.error(StematicConstants.M_OBLIGATE);
         } else {
             empleadoDTO = new EmpleadoDTO(Integer.parseInt(lbl_id.getText()), name, aPaterno,
                     aMaterno, organismo, "", "", "", direccion, puesto);
@@ -615,12 +617,12 @@ public class pnlEmpleado extends javax.swing.JPanel {
                     this.limpiar(materialTextField4);
                     this.limpiar(materialTextField6);
                     this.limpiar(materialTextField9);
-                    mensajes.success("Modificacion Correcta");
+                    mensajes.success(StematicConstants.M_UPDATE_SUCCESS);
                     jButton1.setText("Registrar");
 
                     obtener_empleados();
                 } else {
-                    mensajes.error("Modificacion Incorrecta");
+                    mensajes.error(StematicConstants.M_ERROR);
                 }
 
             } catch (SQLException ex) {

@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package steamatic.dao;
+package steamatic.utils;
 
+import steamatic.interfaces.IMensaje;
 import alertas.AlertError;
 import alertas.AlertSuccess;
 import java.awt.Component;

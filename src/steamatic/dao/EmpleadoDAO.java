@@ -5,6 +5,7 @@
  */
 package steamatic.dao;
 
+import steamatic.interfaces.IEmpleado;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -18,7 +19,6 @@ import steamatic.model.dto.EmpleadoDTO;
 
 /**
  *
- * @author pablonolasco
  */
 public class EmpleadoDAO implements IEmpleado {
 

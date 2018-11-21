@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import steamatic.utils.StematicConstants;
 
 /**
  *
@@ -18,26 +19,20 @@ import java.sql.SQLException;
  */
 public class DBConexion {
 
-    private static final String DRIVER_BD = "com.mysql.jdbc.Driver";
-    private static final String USER_BD = "root";
-    private static final String PASS_BD = "root";
-    private static final String URL_BD = "jdbc:mysql://localhost/Steamatic?useSSL=false";
     private static Driver driver;
-    
+
     /**
      * TODO Constructor que inicializa la conexion a la Base de datos
      *
      * @return conn cadena de conexion
      */
-    
     /**
      * TODO Metodo que retorna la conexion a la base de datos
      */
-    
     public static synchronized Connection getConnection() throws SQLException {
         if (driver == null) {
             try {
-                Class jdbClass = Class.forName(DRIVER_BD);
+                Class jdbClass = Class.forName(StematicConstants.DB_DRIVER_BD);
                 driver = (Driver) jdbClass.newInstance();
                 DriverManager.registerDriver(driver);
             } catch (SQLException e) {
@@ -49,48 +44,56 @@ public class DBConexion {
                 e.printStackTrace();
             }
         }
-        return DriverManager.getConnection(URL_BD, USER_BD, PASS_BD);
+        return DriverManager.getConnection(StematicConstants.DB_URL_BD, StematicConstants.DB_USER_BD, StematicConstants.DB_PASS_BD);
     }
 
     /**
      * TODO metodo que cierra el resulset
-     * @param rs 
+     *
+     * @param rs
      */
-    public static void close_resulset(ResultSet rs){
+    public static void close_resulset(ResultSet rs) {
         try {
-            if(rs!=null)rs.close();
-        }catch(SQLException e){
-            System.err.println("message:"+e.getMessage());
-            
-        }catch (Exception e) {
-            System.err.println("message:"+e.getMessage());
-            
-        }
-        
-    }
-    
-    /**
-     * TODO Metodo que cierra PreparedStatement 
-     * @param ps 
-     */
-    public static void close_stament(PreparedStatement ps){
-        try {
-            if(ps!=null)ps.close();
-            
-        }catch(SQLException e){
-            System.err.println("message:"+e.getMessage());
+            if (rs != null) {
+                rs.close();
+            }
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+
         } catch (Exception e) {
-            System.err.println("message:"+e.getMessage());
+            System.err.println("message:" + e.getMessage());
+
+        }
+
+    }
+
+    /**
+     * TODO Metodo que cierra PreparedStatement
+     *
+     * @param ps
+     */
+    public static void close_stament(PreparedStatement ps) {
+        try {
+            if (ps != null) {
+                ps.close();
+            }
+
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
         }
     }
-    
+
     /**
      * TODO Metodo que desconecta a la base de datos
      */
     public static void desconection(Connection conn) {
         try {
-            if (conn != null) conn.close();
-           
+            if (conn != null) {
+                conn.close();
+            }
+
         } catch (SQLException e) {
             System.err.println("message error conection" + e.getMessage());
         }

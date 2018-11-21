@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package steamatic.dao;
+package steamatic.interfaces;
 
 import java.sql.SQLException;
 import java.util.List;

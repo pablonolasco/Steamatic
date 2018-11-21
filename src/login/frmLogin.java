@@ -12,13 +12,13 @@ import java.util.TimerTask;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import steamatic.dao.AdministradorDAO;
-import steamatic.dao.IAdministrador;
+import steamatic.interfaces.IAdministrador;
 import steamatic.model.dto.AdministradorDTO;
 
 import alertas.*;
 import java.awt.Component;
-import steamatic.dao.Alerts;
-import steamatic.dao.IMensaje;
+import steamatic.utils.Alerts;
+import steamatic.interfaces.IMensaje;
 
 /**
  *
