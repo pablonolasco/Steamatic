@@ -19,4 +19,5 @@ public interface IMetodosFormulario {
     public abstract void ocultar_boton(boolean status );
     public abstract void ocultar_columnas();
     public abstract void pasar_columna_caja(JTextField field, String valor);
+    public abstract Vector encabezado();
 }

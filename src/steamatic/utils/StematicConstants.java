@@ -24,7 +24,6 @@ public class StematicConstants {
     public static final String M_OBLIGATE_SEARCH="Campo de busqueda obligatorio.";
     //*SQL
     public static final String C_INSERT="insert into ";
-    public static final String C_DELETE="DELETE from ";
     public static final String C_UPDATE="UPDATE ";
     public static final String C_SELECT="select ";
     

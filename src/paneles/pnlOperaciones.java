@@ -5,17 +5,62 @@
  */
 package paneles;
 
+import java.sql.SQLException;
+import java.util.Vector;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import steamatic.dao.OperacionDAO;
+import steamatic.interfaces.IMetodosFormulario;
+import steamatic.interfaces.IOperacion;
+import steamatic.model.dto.OperacionDTO;
+import steamatic.model.dto.ProveedorDTO;
+import steamatic.utils.Alerts;
+import steamatic.utils.StematicConstants;
+
 /**
  *
- * 
+ *
  */
-public class pnlOperaciones extends javax.swing.JPanel {
+public class pnlOperaciones extends javax.swing.JPanel implements IMetodosFormulario {
 
     /**
      * Creates new form pnlHome
      */
+    private Alerts alerts = new Alerts();
+    private IOperacion iOperacion = new OperacionDAO();
+    private OperacionDTO operacionDTO;
+    private DefaultTableModel model = null;
+    private Vector encabezado = new Vector();
+
     public pnlOperaciones() {
         initComponents();
+        this.limpiar();
+        this.lbl_id.setVisible(false);
+        this.obtener_operaciones();
+        this.ocultar_boton(true);
+    }
+
+    private void obtener_operaciones() {
+        try {
+            model = new DefaultTableModel();
+            model = iOperacion.get_operaciones();
+
+            if (model != null) {
+                llenarTabla(this.encabezado());
+                this.ocultar_columnas();
+
+            }
+
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        }
+
     }
 
     /**
@@ -51,6 +96,7 @@ public class pnlOperaciones extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        lbl_id = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -78,8 +124,18 @@ public class pnlOperaciones extends javax.swing.JPanel {
         jLabel9.setText("Buscar:");
 
         jButton4.setText("Buscar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Todo");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         rSTableMetro1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -118,8 +174,20 @@ public class pnlOperaciones extends javax.swing.JPanel {
         });
 
         jButton3.setText("Modificar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Eliminar");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        lbl_id.setText("0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -181,7 +249,9 @@ public class pnlOperaciones extends javax.swing.JPanel {
                                 .addGap(62, 62, 62)
                                 .addComponent(jButton5)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton4)
+                            .addComponent(lbl_id))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2)
                         .addGap(56, 56, 56)))
@@ -225,13 +295,17 @@ public class pnlOperaciones extends javax.swing.JPanel {
                             .addComponent(jButton1)
                             .addComponent(jButton3)
                             .addComponent(jButton5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel9)
                             .addComponent(materialTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton2)
-                        .addComponent(jButton4)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lbl_id)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton2)
+                            .addComponent(jButton4))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23))
@@ -244,32 +318,204 @@ public class pnlOperaciones extends javax.swing.JPanel {
 
     private void rSTableMetro1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rSTableMetro1MouseClicked
         // TODO add your handling code here:
-        //        int rowIndex = rSTableMetro1.getSelectedRow();
-        //
-        //        if (evt.getClickCount() == 1) {
-            //            int colIndex = rSTableMetro1.getSelectedColumn();
-            //            String celda = rSTableMetro1.getValueAt(rowIndex, colIndex).toString();
-            //            rSTableMetro1.setToolTipText(celda);
-            //        } else if (evt.getClickCount() == 2) {
-            //
-            //            String id = rSTableMetro1.getValueAt(rowIndex, 0).toString();
-            //            mostrar_boton(jButton2);
-            //            mostrar_boton(jButton3);
-            //            this.pasar_texto(materialTextField1, rSTableMetro1.getValueAt(rowIndex, 1).toString());
-            //            this.pasar_texto(materialTextField2, rSTableMetro1.getValueAt(rowIndex, 2).toString());
-            //            this.pasar_texto(materialTextField3, rSTableMetro1.getValueAt(rowIndex, 3).toString());
-            //            this.pasar_texto(materialTextField4, rSTableMetro1.getValueAt(rowIndex, 4).toString());
-            //            this.pasar_texto(materialTextField6, rSTableMetro1.getValueAt(rowIndex, 8).toString());
-            //            this.pasar_texto(materialTextField9, rSTableMetro1.getValueAt(rowIndex, 9).toString());
-            //            lbl_id.setText(id);
-            //            jButton1.setText("Cancelar");
-            //
-            //        }
+        int rowIndex = rSTableMetro1.getSelectedRow();
+
+        if (evt.getClickCount() == 1) {
+            int colIndex = rSTableMetro1.getSelectedColumn();
+            String celda = rSTableMetro1.getValueAt(rowIndex, colIndex).toString();
+            rSTableMetro1.setToolTipText(celda);
+        } else if (evt.getClickCount() == 2) {
+
+            String id = rSTableMetro1.getValueAt(rowIndex, 0).toString();
+            this.ocultar_boton(false);
+            this.pasar_columna_caja(materialTextField1, rSTableMetro1.getValueAt(rowIndex, 1).toString());
+            this.pasar_columna_caja(materialTextField2, rSTableMetro1.getValueAt(rowIndex, 2).toString());
+            this.pasar_columna_caja(materialTextField3, rSTableMetro1.getValueAt(rowIndex, 3).toString());
+            this.pasar_columna_caja(materialTextField4, rSTableMetro1.getValueAt(rowIndex, 4).toString());
+            this.pasar_columna_caja(materialTextField5, rSTableMetro1.getValueAt(rowIndex, 5).toString());
+            this.pasar_columna_caja(materialTextField6, rSTableMetro1.getValueAt(rowIndex, 6).toString());
+            this.pasar_columna_caja(materialTextField7, rSTableMetro1.getValueAt(rowIndex, 7).toString());
+            lbl_id.setText(id);
+            jButton1.setText("Cancelar");
+
+        }
+
     }//GEN-LAST:event_rSTableMetro1MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        try {
+            String servicio_realizado, tiempo_promedio;
+            String boton = jButton1.getText().toString();
+            String nombre = materialTextField1.getText().toString().trim();
+            String apellido = materialTextField2.getText().toString().trim();
+            String puesto = materialTextField3.getText().toString().trim();
+            String servicios_programados = materialTextField4.getText().toString().trim();
+            servicio_realizado = (materialTextField5.getText().toString().trim());
+            tiempo_promedio = (materialTextField6.getText().toString().trim());
+            Double costo = Double.valueOf(materialTextField7.getText().toString().trim());
+            if (boton.equalsIgnoreCase("Cancelar")) {
+                this.limpiar();
+                this.jButton1.setText("Registrar");
+                this.lbl_id.setText("0");
+                this.ocultar_boton(true);
+            } else {
+
+                if (nombre.equalsIgnoreCase("") || servicio_realizado.equalsIgnoreCase("")
+                        || puesto.equalsIgnoreCase("") || servicios_programados.equalsIgnoreCase("")
+                        || tiempo_promedio.equalsIgnoreCase("")
+                        || apellido.equalsIgnoreCase("")) {
+                    alerts.error(StematicConstants.M_OBLIGATE);
+                } else {
+                    operacionDTO = new OperacionDTO(0, nombre, apellido, puesto,
+                            servicios_programados, Integer.parseInt(servicio_realizado), Integer.parseInt(tiempo_promedio), costo);
+                    int response = iOperacion.insertar_operacion(operacionDTO);
+                    if (response == 1) {
+                        limpiar();
+                        this.obtener_operaciones();
+                        alerts.success(StematicConstants.M_INSERT_SUCCESS);
+                    } else {
+                        alerts.error(StematicConstants.M_ERROR);
+                    }
+                }
+            }
+        } catch (NumberFormatException e) {
+            alerts.error("Formato incorrecto de numero");
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        try {
+            String id = lbl_id.getText();
+            if (id.equalsIgnoreCase("0")) {
+                alerts.error(StematicConstants.M_OBLIGATE_ID);
+            } else {
+                operacionDTO = new OperacionDTO();
+                operacionDTO.setmId_Operaciones(Integer.parseInt(id));
+                int response = iOperacion.eliminar_operacion(operacionDTO);
+                if (response == 1) {
+                    this.limpiar();
+                    this.ocultar_boton(true);
+                    this.jButton1.setText("Registrar");
+                    this.obtener_operaciones();
+                    alerts.success(StematicConstants.M_DELETE_SUCCESS);
+                } else {
+                    alerts.error(StematicConstants.M_ERROR);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        }
+
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        // TODO add your handling code here:
+        try {
+            this.obtener_operaciones();
+        } catch (Exception e) {
+
+        }
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        try {
+            String buscar = materialTextField8.getText();
+
+            if (buscar.equalsIgnoreCase("")) {
+                alerts.error(StematicConstants.M_OBLIGATE_SEARCH);
+
+            } else {
+                operacionDTO = new OperacionDTO();
+                operacionDTO.setmEmpleado_Operaciones(buscar);
+                operacionDTO.setmPuesto(buscar);
+                model = new DefaultTableModel();
+                model = iOperacion.get_operacion(operacionDTO);
+                llenarTabla(this.encabezado());
+                this.ocultar_columnas();
+                this.materialTextField8.setText("");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        }
+
+
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        try {
+            String servicio_realizado, tiempo_promedio;
+            String boton = jButton1.getText().toString();
+            String nombre = materialTextField1.getText().toString().trim();
+            String apellido = materialTextField2.getText().toString().trim();
+            String puesto = materialTextField3.getText().toString().trim();
+            String servicios_programados = materialTextField4.getText().toString().trim();
+            servicio_realizado = (materialTextField5.getText().toString().trim());
+            tiempo_promedio = (materialTextField6.getText().toString().trim());
+            Double costo = Double.valueOf(materialTextField7.getText().toString().trim());
+            String id = lbl_id.getText().toString();
+            if (id.equalsIgnoreCase("0")) {
+                alerts.error(StematicConstants.M_OBLIGATE_ID);
+            } else {
+
+                if (nombre.equalsIgnoreCase("") || servicio_realizado.equalsIgnoreCase("")
+                        || puesto.equalsIgnoreCase("") || servicios_programados.equalsIgnoreCase("")
+                        || tiempo_promedio.equalsIgnoreCase("")
+                        || apellido.equalsIgnoreCase("")) {
+                    alerts.error(StematicConstants.M_OBLIGATE);
+                } else {
+                    operacionDTO = new OperacionDTO(0, nombre, apellido, puesto,
+                            servicios_programados, Integer.parseInt(servicio_realizado), Integer.parseInt(tiempo_promedio), costo);
+                    int response = iOperacion.insertar_operacion(operacionDTO);
+                    if (response == 1) {
+                        limpiar();
+                        this.ocultar_boton(true);
+                        this.obtener_operaciones();
+                        this.jButton1.setText("Registrar");
+                        alerts.success(StematicConstants.M_UPDATE_SUCCESS);
+                    } else {
+                        alerts.error(StematicConstants.M_ERROR);
+                    }
+                }
+            }
+        } catch (NumberFormatException e) {
+            alerts.error("Formato incorrecto de numero");
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        }
+
+
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -288,6 +534,7 @@ public class pnlOperaciones extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lbl_id;
     private principal.MaterialTextField materialTextField1;
     private principal.MaterialTextField materialTextField2;
     private principal.MaterialTextField materialTextField3;
@@ -298,4 +545,76 @@ public class pnlOperaciones extends javax.swing.JPanel {
     private principal.MaterialTextField materialTextField8;
     private rojerusan.RSTableMetro rSTableMetro1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void limpiar() {
+        materialTextField1.setText("");
+        materialTextField2.setText("");
+        materialTextField3.setText("");
+        materialTextField4.setText("");
+        materialTextField5.setText("");
+        materialTextField6.setText("");
+        materialTextField7.setText("");
+
+    }
+
+    @Override
+    public void llenarTabla(Vector vector) {
+        rSTableMetro1.setVisible(true);
+
+        model = new DefaultTableModel(model.getDataVector(), vector) {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return false;  // every cell is not editable
+            }
+        };
+
+        rSTableMetro1.setModel(model);
+
+    }
+
+    @Override
+    public void ocultar_boton(boolean status) {
+        if (status) {
+            jButton3.setVisible(!status);
+            jButton5.setVisible(!status);
+        } else {
+            jButton3.setVisible(!status);
+            jButton5.setVisible(!status);
+        }
+    }
+
+    @Override
+    public void ocultar_columnas() {
+        //oculta columna del idhabitacion
+        rSTableMetro1.getColumnModel().getColumn(0).setMaxWidth(0);
+        rSTableMetro1.getColumnModel().getColumn(0).setMinWidth(0);
+        rSTableMetro1.getColumnModel().getColumn(0).setPreferredWidth(0);
+    }
+
+    @Override
+    public void pasar_columna_caja(JTextField field, String valor) {
+        field.setText(valor);
+    }
+
+    @Override
+    public Vector encabezado() {
+
+        try {
+            encabezado.clear();
+            encabezado.add("Id_Proveedores");
+            encabezado.add("Empleado");
+            encabezado.add("Apellidos");
+            encabezado.add("Puesto");
+            encabezado.add("Serv_Programados");
+            encabezado.add("Serv_Realizado");
+            encabezado.add("Tiempo");
+            encabezado.add("Costo_Servicio");
+
+        } catch (Exception e) {
+            System.err.println("vector:" + e.getMessage());
+            e.printStackTrace();
+        }
+        return encabezado;
+    }
 }

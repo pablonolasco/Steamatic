@@ -58,7 +58,7 @@ public class pnlProveedor extends javax.swing.JPanel implements IMetodosFormular
             model = iProveedor.get_proveedores();
 
             if (model != null) {
-                llenarTabla(vector());
+                llenarTabla(this.encabezado());
                 this.ocultar_columnas();
 
             }
@@ -73,24 +73,6 @@ public class pnlProveedor extends javax.swing.JPanel implements IMetodosFormular
 
         }
 
-    }
-
-    private Vector vector() {
-        try {
-            encabezado.clear();
-            encabezado.add("Id_Proveedores");
-            encabezado.add("Nombre_Proveedor");
-            encabezado.add("Codigo");
-            encabezado.add("RFC");
-            encabezado.add("Direccion");
-            encabezado.add("Telefono");
-            encabezado.add("E_Mail");
-
-        } catch (Exception e) {
-            System.err.println("vector:" + e.getMessage());
-            e.printStackTrace();
-        }
-        return encabezado;
     }
 
     /**
@@ -444,7 +426,7 @@ public class pnlProveedor extends javax.swing.JPanel implements IMetodosFormular
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        
+
         try {
             String codigo, telefono;
             String boton = jButton1.getText().toString();
@@ -457,7 +439,7 @@ public class pnlProveedor extends javax.swing.JPanel implements IMetodosFormular
             String id = lbl_id.getText().toString();
             if (id.equalsIgnoreCase("0")) {
                 alerts.error(StematicConstants.M_OBLIGATE_ID);
-            }else{    
+            } else {
 
                 if (nombre.equalsIgnoreCase("") || codigo.equalsIgnoreCase("")
                         || rfc.equalsIgnoreCase("") || direccion.equalsIgnoreCase("")
@@ -495,7 +477,7 @@ public class pnlProveedor extends javax.swing.JPanel implements IMetodosFormular
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-                try {
+        try {
             String buscar = materialTextField7.getText();
 
             if (buscar.equalsIgnoreCase("")) {
@@ -506,7 +488,7 @@ public class pnlProveedor extends javax.swing.JPanel implements IMetodosFormular
                 proveedordTO.setmNombre_Proveedor(buscar);
                 model = new DefaultTableModel();
                 model = iProveedor.get_proveedor(proveedordTO);
-                llenarTabla(vector());
+                llenarTabla(this.encabezado());
                 this.ocultar_columnas();
                 this.materialTextField7.setText("");
             }
@@ -600,4 +582,25 @@ public class pnlProveedor extends javax.swing.JPanel implements IMetodosFormular
     public void pasar_columna_caja(JTextField field, String valor) {
         field.setText(valor);
     }
+
+    @Override
+    public Vector encabezado() {
+
+        try {
+            encabezado.clear();
+            encabezado.add("Id_Proveedores");
+            encabezado.add("Nombre_Proveedor");
+            encabezado.add("Codigo");
+            encabezado.add("RFC");
+            encabezado.add("Direccion");
+            encabezado.add("Telefono");
+            encabezado.add("E_Mail");
+
+        } catch (Exception e) {
+            System.err.println("vector:" + e.getMessage());
+            e.printStackTrace();
+        }
+        return encabezado;
+    }
+
 }
