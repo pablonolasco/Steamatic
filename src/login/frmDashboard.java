@@ -16,7 +16,7 @@ import paneles.CambiaPanel;
 
 /**
  *
- * 
+ *
  */
 public class frmDashboard extends javax.swing.JFrame {
 
@@ -25,7 +25,6 @@ public class frmDashboard extends javax.swing.JFrame {
     /**
      * Creates new form Principal
      */
-
     public frmDashboard() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
@@ -577,6 +576,11 @@ public class frmDashboard extends javax.swing.JFrame {
             this.ocho.setColorNormal(new Color(239, 238, 244));
             this.ocho.setColorHover(new Color(204, 204, 204));
             this.ocho.setColorPressed(new Color(204, 204, 204));
+
+            this.ocho1.setColorNormal(new Color(239, 238, 244));
+            this.ocho1.setColorHover(new Color(204, 204, 204));
+            this.ocho1.setColorPressed(new Color(204, 204, 204));
+
         } else {
             this.cuatro.setColorNormal(new Color(239, 238, 244));
             this.cuatro.setColorHover(new Color(204, 204, 204));
@@ -593,6 +597,7 @@ public class frmDashboard extends javax.swing.JFrame {
         this.seis.setSelected(false);
         this.siete.setSelected(false);
         this.ocho.setSelected(false);
+        this.ocho1.setSelected(false);
     }//GEN-LAST:event_cuatroMousePressed
 
     private void seisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seisActionPerformed
@@ -629,6 +634,11 @@ public class frmDashboard extends javax.swing.JFrame {
             this.ocho.setColorNormal(new Color(239, 238, 244));
             this.ocho.setColorHover(new Color(204, 204, 204));
             this.ocho.setColorPressed(new Color(204, 204, 204));
+
+            this.ocho1.setColorNormal(new Color(239, 238, 244));
+            this.ocho1.setColorHover(new Color(204, 204, 204));
+            this.ocho1.setColorPressed(new Color(204, 204, 204));
+
         } else {
             this.seis.setColorNormal(new Color(239, 238, 244));
             this.seis.setColorHover(new Color(204, 204, 204));
@@ -645,6 +655,8 @@ public class frmDashboard extends javax.swing.JFrame {
         this.seis.setSelected(true);
         this.siete.setSelected(false);
         this.ocho.setSelected(false);
+        this.ocho1.setSelected(false);
+
     }//GEN-LAST:event_seisMousePressed
 
     private void sieteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sieteActionPerformed
@@ -681,6 +693,11 @@ public class frmDashboard extends javax.swing.JFrame {
             this.ocho.setColorNormal(new Color(239, 238, 244));
             this.ocho.setColorHover(new Color(204, 204, 204));
             this.ocho.setColorPressed(new Color(204, 204, 204));
+
+            this.ocho1.setColorNormal(new Color(239, 238, 244));
+            this.ocho1.setColorHover(new Color(204, 204, 204));
+            this.ocho1.setColorPressed(new Color(204, 204, 204));
+
         } else {
             this.siete.setColorNormal(new Color(239, 238, 244));
             this.siete.setColorHover(new Color(204, 204, 204));
@@ -697,6 +714,8 @@ public class frmDashboard extends javax.swing.JFrame {
         this.seis.setSelected(false);
         this.siete.setSelected(true);
         this.ocho.setSelected(false);
+        this.ocho1.setSelected(false);
+
     }//GEN-LAST:event_sieteMousePressed
 
     private void cincoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cincoActionPerformed
@@ -733,6 +752,11 @@ public class frmDashboard extends javax.swing.JFrame {
             this.ocho.setColorNormal(new Color(239, 238, 244));
             this.ocho.setColorHover(new Color(204, 204, 204));
             this.ocho.setColorPressed(new Color(204, 204, 204));
+
+            this.ocho1.setColorNormal(new Color(239, 238, 244));
+            this.ocho1.setColorHover(new Color(204, 204, 204));
+            this.ocho1.setColorPressed(new Color(204, 204, 204));
+
         } else {
             this.cinco.setColorNormal(new Color(239, 238, 244));
             this.cinco.setColorHover(new Color(204, 204, 204));
@@ -749,6 +773,8 @@ public class frmDashboard extends javax.swing.JFrame {
         this.seis.setSelected(false);
         this.siete.setSelected(false);
         this.ocho.setSelected(false);
+        this.ocho1.setSelected(false);
+
     }//GEN-LAST:event_cincoMousePressed
 
     private void dosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dosActionPerformed
@@ -785,6 +811,11 @@ public class frmDashboard extends javax.swing.JFrame {
             this.ocho.setColorNormal(new Color(239, 238, 244));
             this.ocho.setColorHover(new Color(204, 204, 204));
             this.ocho.setColorPressed(new Color(204, 204, 204));
+
+            this.ocho1.setColorNormal(new Color(239, 238, 244));
+            this.ocho1.setColorHover(new Color(204, 204, 204));
+            this.ocho1.setColorPressed(new Color(204, 204, 204));
+
         } else {
             this.dos.setColorNormal(new Color(239, 238, 244));
             this.dos.setColorHover(new Color(204, 204, 204));
@@ -801,6 +832,8 @@ public class frmDashboard extends javax.swing.JFrame {
         this.seis.setSelected(false);
         this.siete.setSelected(false);
         this.ocho.setSelected(false);
+        this.ocho1.setSelected(false);
+
     }//GEN-LAST:event_dosMousePressed
 
     private void tresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tresActionPerformed
@@ -837,6 +870,11 @@ public class frmDashboard extends javax.swing.JFrame {
             this.ocho.setColorNormal(new Color(239, 238, 244));
             this.ocho.setColorHover(new Color(204, 204, 204));
             this.ocho.setColorPressed(new Color(204, 204, 204));
+
+            this.ocho1.setColorNormal(new Color(239, 238, 244));
+            this.ocho1.setColorHover(new Color(204, 204, 204));
+            this.ocho1.setColorPressed(new Color(204, 204, 204));
+
         } else {
             this.tres.setColorNormal(new Color(239, 238, 244));
             this.tres.setColorHover(new Color(204, 204, 204));
@@ -853,6 +891,8 @@ public class frmDashboard extends javax.swing.JFrame {
         this.seis.setSelected(false);
         this.siete.setSelected(false);
         this.ocho.setSelected(false);
+        this.ocho1.setSelected(false);
+
     }//GEN-LAST:event_tresMousePressed
 
     private void unoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unoActionPerformed
@@ -889,6 +929,11 @@ public class frmDashboard extends javax.swing.JFrame {
             this.ocho.setColorNormal(new Color(239, 238, 244));
             this.ocho.setColorHover(new Color(204, 204, 204));
             this.ocho.setColorPressed(new Color(204, 204, 204));
+
+            this.ocho1.setColorNormal(new Color(239, 238, 244));
+            this.ocho1.setColorHover(new Color(204, 204, 204));
+            this.ocho1.setColorPressed(new Color(204, 204, 204));
+
         } else {
             this.uno.setColorNormal(new Color(239, 238, 244));
             this.uno.setColorHover(new Color(204, 204, 204));
@@ -905,6 +950,8 @@ public class frmDashboard extends javax.swing.JFrame {
         this.seis.setSelected(false);
         this.siete.setSelected(false);
         this.ocho.setSelected(false);
+        this.ocho1.setSelected(false);
+
     }//GEN-LAST:event_unoMousePressed
 
     private void ochoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ochoMousePressed
@@ -917,56 +964,115 @@ public class frmDashboard extends javax.swing.JFrame {
         this.seis.setSelected(false);
         this.siete.setSelected(false);
         this.ocho.setSelected(true);
+        this.ocho1.setSelected(false);
+
     }//GEN-LAST:event_ochoMousePressed
 
     private void ochoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ochoActionPerformed
         // TODO add your handling code here:
-         new CambiaPanel(pnlPrincipal, new paneles.pnlOperaciones());
-        if(this.ocho.isSelected()){
-            this.uno.setColorNormal(new Color(239,238,244));
-            this.uno.setColorHover(new Color(204,204,204));
-            this.uno.setColorPressed(new Color(204,204,204));
-            
-            this.dos.setColorNormal(new Color(239,238,244));
-            this.dos.setColorHover(new Color(204,204,204));
-            this.dos.setColorPressed(new Color(204,204,204));
-            
-            this.tres.setColorNormal(new Color(239,238,244));
-            this.tres.setColorHover(new Color(204,204,204));
-            this.tres.setColorPressed(new Color(204,204,204));
-            
-            this.cuatro.setColorNormal(new Color(239,238,244));
-            this.cuatro.setColorHover(new Color(204,204,204));
-            this.cuatro.setColorPressed(new Color(204,204,204));
-            
-            this.cinco.setColorNormal(new Color(239,238,244));
-            this.cinco.setColorHover(new Color(204,204,204));
-            this.cinco.setColorPressed(new Color(204,204,204));
-            
-            this.seis.setColorNormal(new Color(239,238,244));
-            this.seis.setColorHover(new Color(204,204,204));
-            this.seis.setColorPressed(new Color(204,204,204));
-            
-            this.siete.setColorNormal(new Color(239,238,244));
-            this.siete.setColorHover(new Color(204,204,204));
-            this.siete.setColorPressed(new Color(204,204,204));
-            
-            this.ocho.setColorNormal(new Color(204,204,204));
-            this.ocho.setColorHover(new Color(204,204,204));
-            this.ocho.setColorPressed(new Color(204,204,204));
-        }else{
-            this.ocho.setColorNormal(new Color(239,238,244));
-            this.ocho.setColorHover(new Color(204,204,204));
-            this.ocho.setColorPressed(new Color(204,204,204));
+        new CambiaPanel(pnlPrincipal, new paneles.pnlOperaciones());
+        if (this.ocho.isSelected()) {
+            this.uno.setColorNormal(new Color(239, 238, 244));
+            this.uno.setColorHover(new Color(204, 204, 204));
+            this.uno.setColorPressed(new Color(204, 204, 204));
+
+            this.dos.setColorNormal(new Color(239, 238, 244));
+            this.dos.setColorHover(new Color(204, 204, 204));
+            this.dos.setColorPressed(new Color(204, 204, 204));
+
+            this.tres.setColorNormal(new Color(239, 238, 244));
+            this.tres.setColorHover(new Color(204, 204, 204));
+            this.tres.setColorPressed(new Color(204, 204, 204));
+
+            this.cuatro.setColorNormal(new Color(239, 238, 244));
+            this.cuatro.setColorHover(new Color(204, 204, 204));
+            this.cuatro.setColorPressed(new Color(204, 204, 204));
+
+            this.cinco.setColorNormal(new Color(239, 238, 244));
+            this.cinco.setColorHover(new Color(204, 204, 204));
+            this.cinco.setColorPressed(new Color(204, 204, 204));
+
+            this.seis.setColorNormal(new Color(239, 238, 244));
+            this.seis.setColorHover(new Color(204, 204, 204));
+            this.seis.setColorPressed(new Color(204, 204, 204));
+
+            this.siete.setColorNormal(new Color(239, 238, 244));
+            this.siete.setColorHover(new Color(204, 204, 204));
+            this.siete.setColorPressed(new Color(204, 204, 204));
+
+            this.ocho.setColorNormal(new Color(204, 204, 204));
+            this.ocho.setColorHover(new Color(204, 204, 204));
+            this.ocho.setColorPressed(new Color(204, 204, 204));
+
+            this.ocho1.setColorNormal(new Color(239, 238, 244));
+            this.ocho1.setColorHover(new Color(204, 204, 204));
+            this.ocho1.setColorPressed(new Color(204, 204, 204));
+
+        } else {
+            this.ocho.setColorNormal(new Color(239, 238, 244));
+            this.ocho.setColorHover(new Color(204, 204, 204));
+            this.ocho.setColorPressed(new Color(204, 204, 204));
         }
     }//GEN-LAST:event_ochoActionPerformed
 
     private void ocho1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ocho1MousePressed
         // TODO add your handling code here:
+        this.uno.setSelected(false);
+        this.dos.setSelected(false);
+        this.tres.setSelected(false);
+        this.cuatro.setSelected(false);
+        this.cinco.setSelected(false);
+        this.seis.setSelected(false);
+        this.siete.setSelected(false);
+        this.ocho.setSelected(false);
+        this.ocho1.setSelected(true);
+
     }//GEN-LAST:event_ocho1MousePressed
 
     private void ocho1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ocho1ActionPerformed
         // TODO add your handling code here:
+        new CambiaPanel(pnlPrincipal, new paneles.pnlAlmacen());
+        if (this.ocho1.isSelected()) {
+            this.uno.setColorNormal(new Color(239, 238, 244));
+            this.uno.setColorHover(new Color(204, 204, 204));
+            this.uno.setColorPressed(new Color(204, 204, 204));
+
+            this.dos.setColorNormal(new Color(239, 238, 244));
+            this.dos.setColorHover(new Color(204, 204, 204));
+            this.dos.setColorPressed(new Color(204, 204, 204));
+
+            this.tres.setColorNormal(new Color(239, 238, 244));
+            this.tres.setColorHover(new Color(204, 204, 204));
+            this.tres.setColorPressed(new Color(204, 204, 204));
+
+            this.cuatro.setColorNormal(new Color(239, 238, 244));
+            this.cuatro.setColorHover(new Color(204, 204, 204));
+            this.cuatro.setColorPressed(new Color(204, 204, 204));
+
+            this.cinco.setColorNormal(new Color(239, 238, 244));
+            this.cinco.setColorHover(new Color(204, 204, 204));
+            this.cinco.setColorPressed(new Color(204, 204, 204));
+
+            this.seis.setColorNormal(new Color(239, 238, 244));
+            this.seis.setColorHover(new Color(204, 204, 204));
+            this.seis.setColorPressed(new Color(204, 204, 204));
+
+            this.siete.setColorNormal(new Color(239, 238, 244));
+            this.siete.setColorHover(new Color(204, 204, 204));
+            this.siete.setColorPressed(new Color(204, 204, 204));
+
+            this.ocho.setColorNormal(new Color(239, 238, 244));
+            this.ocho.setColorHover(new Color(204, 204, 204));
+            this.ocho.setColorPressed(new Color(204, 204, 204));
+
+            this.ocho1.setColorNormal(new Color(204, 204, 204));
+            this.ocho1.setColorHover(new Color(204, 204, 204));
+            this.ocho1.setColorPressed(new Color(204, 204, 204));
+        } else {
+            this.ocho1.setColorNormal(new Color(239, 238, 244));
+            this.ocho1.setColorHover(new Color(204, 204, 204));
+            this.ocho1.setColorPressed(new Color(204, 204, 204));
+        }
     }//GEN-LAST:event_ocho1ActionPerformed
 
     /**
