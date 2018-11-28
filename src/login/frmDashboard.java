@@ -21,19 +21,32 @@ import paneles.CambiaPanel;
 public class frmDashboard extends javax.swing.JFrame {
 
     int x, y;
-
+    private String id;
+    private String nombre;
+    
     /**
      * Creates new form Principal
      */
-    public frmDashboard() {
+    public frmDashboard(int id) {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setLocationRelativeTo(this);
         this.uno.setSelected(true);
-
+        this.lbl_id.setText(String.valueOf(id));
+        this.lbl_id.setVisible(false);
+        this.setVisible(false);
         new CambiaPanel(pnlPrincipal, new paneles.pnlHome());
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -65,6 +78,7 @@ public class frmDashboard extends javax.swing.JFrame {
         pnlCentro = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        lbl_id = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         pnlPrincipal = new javax.swing.JPanel();
 
@@ -459,6 +473,8 @@ public class frmDashboard extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(128, 128, 131));
         jLabel4.setText("DASHBOARD");
 
+        lbl_id.setText("id_us");
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -466,13 +482,17 @@ public class frmDashboard extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4)
-                .addContainerGap(578, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 468, Short.MAX_VALUE)
+                .addComponent(lbl_id)
+                .addGap(74, 74, 74))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel4)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(lbl_id))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1108,7 +1128,7 @@ public class frmDashboard extends javax.swing.JFrame {
             public void run() {
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                    new frmDashboard().setVisible(true);
+                    new frmDashboard(0).setVisible(true);
                 } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
                     Logger.getLogger(frmDashboard.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -1131,6 +1151,7 @@ public class frmDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
+    public static javax.swing.JLabel lbl_id;
     private rsbuttom.RSButtonMetro ocho;
     private rsbuttom.RSButtonMetro ocho1;
     private javax.swing.JPanel pnlCentro;

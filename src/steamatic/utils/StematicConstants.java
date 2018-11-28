@@ -26,6 +26,7 @@ public class StematicConstants {
     public static final String C_INSERT="insert into ";
     public static final String C_UPDATE="UPDATE ";
     public static final String C_SELECT="select ";
+    public static String M_EMPLEADO="Selecciona Empleado";
     
    
     

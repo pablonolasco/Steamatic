@@ -292,7 +292,7 @@ Alerts alerts= new Alerts();
 
                             if (adtoResponse.getmId_Usuario() > 0) {
                                 
-                                frmDashboard dashboard = new frmDashboard();
+                                frmDashboard dashboard = new frmDashboard(adtoResponse.getmId_empleado());
 
                                 dashboard.setExtendedState(MAXIMIZED_BOTH);
                                 dashboard.setVisible(true);

@@ -15,6 +15,7 @@ public class AdministradorDTO implements Serializable{
     private int mId_Usuario;
     private String mUsuario;
     private String mPassword;
+    private int mId_empleado;
 
     public AdministradorDTO() {
     }
@@ -24,6 +25,15 @@ public class AdministradorDTO implements Serializable{
         this.mUsuario = mUsuario;
         this.mPassword = mPassword;
     }
+
+    public AdministradorDTO(int mId_Usuario, String mUsuario, String mPassword, int mId_empleado) {
+        this.mId_Usuario = mId_Usuario;
+        this.mUsuario = mUsuario;
+        this.mPassword = mPassword;
+        this.mId_empleado = mId_empleado;
+    }
+    
+    
 
     public int getmId_Usuario() {
         return mId_Usuario;
@@ -48,6 +58,16 @@ public class AdministradorDTO implements Serializable{
     public void setmPassword(String mPassword) {
         this.mPassword = mPassword;
     }
+
+    public int getmId_empleado() {
+        return mId_empleado;
+    }
+
+    public void setmId_empleado(int mId_empleado) {
+        this.mId_empleado = mId_empleado;
+    }
+    
+    
 
     @Override
     public String toString() {

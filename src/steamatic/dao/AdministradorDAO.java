@@ -21,7 +21,7 @@ public class AdministradorDAO implements IAdministrador {
     private ResultSet resultSet;
     private PreparedStatement statement;
     private Connection connection;
-    private final String SQL_READ = "select id_usuario, usuario, pwd from usuario where usuario=? and pwd=?";
+    private final String SQL_READ = "select id_usuario, usuario,pwd,id_empleado  from usuario where usuario=? and pwd=?";
 
     public AdministradorDAO() {
     }
@@ -44,6 +44,7 @@ public class AdministradorDAO implements IAdministrador {
                 administradorDTO1.setmId_Usuario(resultSet.getInt(1));
                 administradorDTO1.setmUsuario(resultSet.getString(2));
                 administradorDTO1.setmPassword(resultSet.getString(3));
+                administradorDTO1.setmId_empleado(resultSet.getInt(4));
             }
 
         } catch (SQLException e) {

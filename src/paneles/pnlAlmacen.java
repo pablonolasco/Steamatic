@@ -5,17 +5,71 @@
  */
 package paneles;
 
+import dialogs.dlgEmpleados;
+import java.sql.SQLException;
+import java.util.Vector;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import login.frmDashboard;
+import steamatic.dao.AlmacenDAO;
+import steamatic.interfaces.IAlmacen;
+import steamatic.interfaces.IMetodosFormulario;
+import steamatic.model.dto.AlmacenDTO;
+import steamatic.utils.Alerts;
+import steamatic.utils.StematicConstants;
+import sun.awt.im.InputMethodJFrame;
+
 /**
  *
- * 
+ *
  */
-public class pnlAlmacen extends javax.swing.JPanel {
+public class pnlAlmacen extends javax.swing.JPanel implements IMetodosFormulario {
 
     /**
      * Creates new form pnlHome
      */
+    private Alerts alerts = new Alerts();
+    private AlmacenDTO almacenDTO;
+    private IAlmacen iAlmacen = new AlmacenDAO();
+    private Vector encabezado = new Vector();
+    private DefaultTableModel model = null;
+    public static String id;
+
     public pnlAlmacen() {
         initComponents();
+        this.limpiar();
+        this.lbl_id.setVisible(false);
+        this.lbl_id_emp.setVisible(false);
+        this.lbl_nom_emp.setVisible(false);
+        this.obtener_alamcenes();
+        this.ocultar_boton(true);
+        this.id = frmDashboard.lbl_id.getText();
+        this.empleado.setVisible(false);
+
+    }
+
+    private void obtener_alamcenes() {
+        try {
+            model = new DefaultTableModel();
+            model = iAlmacen.get_almacenes();
+
+            if (model != null) {
+                llenarTabla(this.encabezado());
+                this.ocultar_columnas();
+
+            }
+
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        }
+
     }
 
     /**
@@ -28,6 +82,31 @@ public class pnlAlmacen extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel7 = new javax.swing.JLabel();
+        empleado = new javax.swing.JButton();
+        lbl_nom_emp = new javax.swing.JLabel();
+        materialTextField1 = new principal.MaterialTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        materialTextField2 = new principal.MaterialTextField();
+        materialTextField3 = new principal.MaterialTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        materialTextField4 = new principal.MaterialTextField();
+        jLabel5 = new javax.swing.JLabel();
+        materialTextField5 = new principal.MaterialTextField();
+        jLabel6 = new javax.swing.JLabel();
+        materialTextField6 = new principal.MaterialTextField();
+        registrar = new javax.swing.JButton();
+        modificar = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        lbl_id = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        materialTextField7 = new principal.MaterialTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        rSTableMetro1 = new rojerusan.RSTableMetro();
+        jButton4 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        lbl_id_emp = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -38,26 +117,538 @@ public class pnlAlmacen extends javax.swing.JPanel {
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/almacen.png"))); // NOI18N
         jLabel7.setText("ALMACEN");
 
+        empleado.setText("Empleado");
+        empleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                empleadoActionPerformed(evt);
+            }
+        });
+
+        lbl_nom_emp.setText("jLabel1");
+
+        jLabel1.setText("Articulo:");
+
+        jLabel3.setText("U.Medida:");
+
+        jLabel2.setText("S.Minimo:");
+
+        jLabel4.setText("S.Actual:");
+
+        jLabel5.setText("Costo Promedio:");
+
+        jLabel6.setText("Existencia:");
+
+        registrar.setText("Registrar");
+        registrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registrarActionPerformed(evt);
+            }
+        });
+
+        modificar.setText("Modificar");
+        modificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modificarActionPerformed(evt);
+            }
+        });
+
+        jButton5.setText("Eliminar");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        lbl_id.setText("0");
+
+        jLabel9.setText("Buscar:");
+
+        rSTableMetro1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        rSTableMetro1.setToolTipText("Empleados\n");
+        rSTableMetro1.setFuenteFilasSelect(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        rSTableMetro1.setFuenteHead(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        rSTableMetro1.setGrosorBordeFilas(0);
+        rSTableMetro1.setGrosorBordeHead(0);
+        rSTableMetro1.setRowHeight(20);
+        rSTableMetro1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                rSTableMetro1FocusGained(evt);
+            }
+        });
+        rSTableMetro1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rSTableMetro1MouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(rSTableMetro1);
+
+        jButton4.setText("Buscar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jButton6.setText("Todo");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        lbl_id_emp.setText("0");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 991, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(empleado)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lbl_nom_emp)
+                        .addGap(271, 271, 271)
+                        .addComponent(lbl_id)
+                        .addGap(162, 162, 162)
+                        .addComponent(lbl_id_emp)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(materialTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(materialTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(materialTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(materialTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(materialTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(materialTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(29, 29, 29)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(176, 176, 176)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(materialTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(registrar)
+                        .addGap(175, 175, 175)
+                        .addComponent(modificar)
+                        .addGap(133, 133, 133)
+                        .addComponent(jButton5)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton6)
+                .addGap(71, 71, 71))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel7)
-                .addContainerGap(471, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(materialTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(materialTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(materialTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(materialTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(materialTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(materialTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(empleado)
+                            .addComponent(lbl_nom_emp))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(lbl_id)
+                            .addGap(18, 18, 18)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(lbl_id_emp)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(registrar)
+                            .addComponent(modificar)
+                            .addComponent(jButton5))
+                        .addGap(49, 49, 49))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel9)
+                        .addComponent(materialTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton4)
+                        .addComponent(jButton6)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void empleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empleadoActionPerformed
+        // TODO add your handling code here:
+        JFrame frame = new JFrame();
+        dlgEmpleados empleados = new dlgEmpleados(frame, true);
+        empleados.setVisible(true);
+        this.lbl_id.setVisible(false);
+        this.lbl_nom_emp.setVisible(false);
+        this.validate();
+
+    }//GEN-LAST:event_empleadoActionPerformed
+
+    private void registrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarActionPerformed
+        // TODO add your handling code here:
+        try {
+            String costo_promedio, existencia;
+            String boton = registrar.getText().toString();
+            String nombre = materialTextField1.getText().toString().trim();
+            String unidad_medida = materialTextField2.getText().toString().trim();
+            String stock_minimo = materialTextField3.getText().toString().trim();
+            String stock_actual = materialTextField4.getText().toString().trim();
+            costo_promedio = (materialTextField5.getText().toString().trim());
+            existencia = (materialTextField6.getText().toString().trim());
+            this.updateUI();
+
+            if (boton.equalsIgnoreCase("Cancelar")) {
+                this.limpiar();
+                this.registrar.setText("Registrar");
+                this.lbl_id.setText("0");
+                this.ocultar_boton(true);
+            } else {
+
+                if (nombre.equalsIgnoreCase("") || costo_promedio.equalsIgnoreCase("")
+                        || stock_minimo.equalsIgnoreCase("") || stock_actual.equalsIgnoreCase("")
+                        || existencia.equalsIgnoreCase("")
+                        || unidad_medida.equalsIgnoreCase("")) {
+                    alerts.error(StematicConstants.M_OBLIGATE);
+                } else {
+                    int id_emp = Integer.parseInt(id);
+                    if (id_emp == 0) {
+                        int axu = Integer.parseInt(lbl_id.getText());
+                        alerts.error(StematicConstants.M_EMPLEADO);
+                    } else {
+                        almacenDTO = new AlmacenDTO(id_emp, 0, nombre, Double.valueOf(unidad_medida),
+                                Integer.parseInt(stock_minimo), Integer.parseInt(stock_actual),
+                                Double.valueOf(costo_promedio), existencia);
+                        int response = iAlmacen.insertar_almacen(almacenDTO);
+                        if (response == 1) {
+                            limpiar();
+                            this.obtener_alamcenes();
+                            alerts.success(StematicConstants.M_INSERT_SUCCESS);
+                        } else {
+                            alerts.error(StematicConstants.M_ERROR);
+                        }
+                    }
+                }
+            }
+        } catch (NumberFormatException e) {
+            alerts.error("Formato incorrecto de numero");
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_registrarActionPerformed
+
+    private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
+        // TODO add your handling code here:
+        try {
+            String costo_promedio, existencia;
+            String boton = registrar.getText().toString();
+            String nombre = materialTextField1.getText().toString().trim();
+            String unidad_medida = materialTextField2.getText().toString().trim();
+            String stock_minimo = materialTextField3.getText().toString().trim();
+            String stock_actual = materialTextField4.getText().toString().trim();
+            costo_promedio = (materialTextField5.getText().toString().trim());
+            existencia = (materialTextField6.getText().toString().trim());
+
+            if (nombre.equalsIgnoreCase("") || costo_promedio.equalsIgnoreCase("")
+                    || stock_minimo.equalsIgnoreCase("") || stock_actual.equalsIgnoreCase("")
+                    || existencia.equalsIgnoreCase("")
+                    || unidad_medida.equalsIgnoreCase("")) {
+                alerts.error(StematicConstants.M_OBLIGATE);
+            } else {
+                int id_almacen = Integer.parseInt(lbl_id.getText());
+                if (id_almacen == 0) {
+                    alerts.error(StematicConstants.M_OBLIGATE_ID);
+                } else {
+                    almacenDTO = new AlmacenDTO(0, id_almacen, nombre, Double.valueOf(unidad_medida),
+                            Integer.parseInt(stock_minimo), Integer.parseInt(stock_actual),
+                            Double.valueOf(costo_promedio), existencia);
+                    int response = iAlmacen.update_almacen(almacenDTO);
+                    if (response == 1) {
+                        limpiar();
+                        this.obtener_alamcenes();
+                        alerts.success(StematicConstants.M_UPDATE_SUCCESS);
+                    } else {
+                        alerts.error(StematicConstants.M_ERROR);
+                    }
+                }
+
+            }
+        } catch (NumberFormatException e) {
+            alerts.error("Formato incorrecto de numero");
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        }
+
+    }//GEN-LAST:event_modificarActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        try {
+            String id = lbl_id.getText();
+            if (id.equalsIgnoreCase("0")) {
+                alerts.error(StematicConstants.M_OBLIGATE_ID);
+            } else {
+                almacenDTO = new AlmacenDTO();
+                almacenDTO.setmId_Articulo(Integer.parseInt(id));
+                int response = iAlmacen.eliminar_almacen(almacenDTO);
+                if (response == 1) {
+                    this.limpiar();
+                    this.ocultar_boton(true);
+                    this.registrar.setText("Registrar");
+                    this.obtener_alamcenes();
+                    alerts.success(StematicConstants.M_DELETE_SUCCESS);
+                } else {
+                    alerts.error(StematicConstants.M_ERROR);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void rSTableMetro1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_rSTableMetro1FocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rSTableMetro1FocusGained
+
+    private void rSTableMetro1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rSTableMetro1MouseClicked
+        // TODO add your handling code here:
+        int rowIndex = rSTableMetro1.getSelectedRow();
+        this.empleado.setVisible(false);
+        if (evt.getClickCount() == 1) {
+            int colIndex = rSTableMetro1.getSelectedColumn();
+            String celda = rSTableMetro1.getValueAt(rowIndex, colIndex).toString();
+            rSTableMetro1.setToolTipText(celda);
+        } else if (evt.getClickCount() == 2) {
+
+            String id = rSTableMetro1.getValueAt(rowIndex, 1).toString();
+            this.ocultar_boton(false);
+            this.pasar_columna_caja(materialTextField1, rSTableMetro1.getValueAt(rowIndex, 2).toString());
+            this.pasar_columna_caja(materialTextField2, rSTableMetro1.getValueAt(rowIndex, 4).toString());
+            this.pasar_columna_caja(materialTextField3, rSTableMetro1.getValueAt(rowIndex, 5).toString());
+            this.pasar_columna_caja(materialTextField4, rSTableMetro1.getValueAt(rowIndex, 6).toString());
+            this.pasar_columna_caja(materialTextField5, rSTableMetro1.getValueAt(rowIndex, 7).toString());
+            this.pasar_columna_caja(materialTextField6, rSTableMetro1.getValueAt(rowIndex, 8).toString());
+            lbl_id.setText(id);
+            registrar.setText("Cancelar");
+
+        }
+    }//GEN-LAST:event_rSTableMetro1MouseClicked
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        try {
+            String buscar = materialTextField7.getText();
+
+            if (buscar.equalsIgnoreCase("")) {
+                alerts.error(StematicConstants.M_OBLIGATE_SEARCH);
+
+            } else {
+                almacenDTO = new AlmacenDTO();
+                almacenDTO.setmArticulo(buscar);
+                model = new DefaultTableModel();
+                model = iAlmacen.get_almacen(almacenDTO);
+                llenarTabla(this.encabezado());
+                this.ocultar_columnas();
+                this.materialTextField7.setText("");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        }
+
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        // TODO add your handling code here:
+        try {
+            this.obtener_alamcenes();
+        } catch (Exception e) {
+
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton empleado;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lbl_id;
+    public static javax.swing.JLabel lbl_id_emp;
+    public static javax.swing.JLabel lbl_nom_emp;
+    private principal.MaterialTextField materialTextField1;
+    private principal.MaterialTextField materialTextField2;
+    private principal.MaterialTextField materialTextField3;
+    private principal.MaterialTextField materialTextField4;
+    private principal.MaterialTextField materialTextField5;
+    private principal.MaterialTextField materialTextField6;
+    private principal.MaterialTextField materialTextField7;
+    private javax.swing.JButton modificar;
+    private rojerusan.RSTableMetro rSTableMetro1;
+    private javax.swing.JButton registrar;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void limpiar() {
+        materialTextField1.setText("");
+        materialTextField2.setText("");
+        materialTextField3.setText("");
+        materialTextField4.setText("");
+        materialTextField5.setText("");
+        materialTextField6.setText("");
+        materialTextField7.setText("");
+    }
+
+    @Override
+    public void llenarTabla(Vector vector) {
+        rSTableMetro1.setVisible(true);
+
+        model = new DefaultTableModel(model.getDataVector(), vector) {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return false;  // every cell is not editable
+            }
+        };
+
+        rSTableMetro1.setModel(model);
+    }
+
+    @Override
+    public void ocultar_boton(boolean status) {
+        if (status) {
+            modificar.setVisible(!status);
+            jButton5.setVisible(!status);
+        } else {
+            modificar.setVisible(!status);
+            jButton5.setVisible(!status);
+        }
+
+    }
+
+    @Override
+    public void ocultar_columnas() {
+        //oculta columna del idhabitacion
+        rSTableMetro1.getColumnModel().getColumn(0).setMaxWidth(0);
+        rSTableMetro1.getColumnModel().getColumn(0).setMinWidth(0);
+        rSTableMetro1.getColumnModel().getColumn(0).setPreferredWidth(0);
+        rSTableMetro1.getColumnModel().getColumn(1).setMaxWidth(0);
+        rSTableMetro1.getColumnModel().getColumn(1).setMinWidth(0);
+        rSTableMetro1.getColumnModel().getColumn(1).setPreferredWidth(0);
+    }
+
+    @Override
+    public void pasar_columna_caja(JTextField field, String valor) {
+        field.setText(valor);
+
+    }
+
+    @Override
+    public Vector encabezado() {
+
+        try {
+            encabezado.clear();
+            encabezado.add("Id_Empleado");
+            encabezado.add("Id_Articulo");
+            encabezado.add("Articulo");
+            encabezado.add("Fecha_Registro");
+            encabezado.add("Unidad_Medida");
+            encabezado.add("Stock_minimo");
+            encabezado.add("Stock_Actual");
+            encabezado.add("Costo_Promedio");
+            encabezado.add("Existencia");
+
+        } catch (Exception e) {
+            System.err.println("vector:" + e.getMessage());
+            e.printStackTrace();
+        }
+        return encabezado;
+    }
 }
