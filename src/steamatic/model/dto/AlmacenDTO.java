@@ -26,7 +26,9 @@ public class AlmacenDTO implements Serializable {
     public AlmacenDTO() {
     }
 
-    public AlmacenDTO(int mId_Empleado, int mId_Articulo, String mArticulo, Double mUnidad_Medida, int mStock_minimo, int mStock_Actual, Double mCosto_Promedio, String mExistencia) {
+    public AlmacenDTO(int mId_Empleado, int mId_Articulo, String mArticulo, 
+            Double mUnidad_Medida, int mStock_minimo, int mStock_Actual, 
+            Double mCosto_Promedio, String mExistencia) {
         this.mId_Empleado = mId_Empleado;
         this.mId_Articulo = mId_Articulo;
         this.mArticulo = mArticulo;

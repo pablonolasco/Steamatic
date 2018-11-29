@@ -28,6 +28,25 @@ public class pnlDevolucion extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel7 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jLabel10 = new javax.swing.JLabel();
+        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jLabel1 = new javax.swing.JLabel();
+        materialTextField1 = new principal.MaterialTextField();
+        empleado = new javax.swing.JButton();
+        lbl_nom_emp = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        materialTextField2 = new principal.MaterialTextField();
+        registrar = new javax.swing.JButton();
+        modificar = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        materialTextField10 = new principal.MaterialTextField();
+        jLabel11 = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        rSTableMetro1 = new rojerusan.RSTableMetro();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -38,13 +57,141 @@ public class pnlDevolucion extends javax.swing.JPanel {
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/almacenDe.png"))); // NOI18N
         jLabel7.setText("ALMACEN DEVOLUCION");
 
+        jLabel9.setText("Fecha Entrada:");
+
+        jLabel10.setText("Fecha Salida:");
+
+        jLabel1.setText("Total devuelto:");
+
+        empleado.setText("Articulo");
+        empleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                empleadoActionPerformed(evt);
+            }
+        });
+
+        lbl_nom_emp.setText("jLabel1");
+
+        jLabel2.setText("Articulo devuelto:");
+
+        registrar.setText("Registrar");
+        registrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registrarActionPerformed(evt);
+            }
+        });
+
+        modificar.setText("Modificar");
+        modificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modificarActionPerformed(evt);
+            }
+        });
+
+        jButton5.setText("Eliminar");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jLabel11.setText("Buscar:");
+
+        jButton4.setText("Buscar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jButton6.setText("Todo");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        rSTableMetro1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        rSTableMetro1.setToolTipText("Empleados\n");
+        rSTableMetro1.setFuenteFilasSelect(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        rSTableMetro1.setFuenteHead(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        rSTableMetro1.setGrosorBordeFilas(0);
+        rSTableMetro1.setGrosorBordeHead(0);
+        rSTableMetro1.setRowHeight(20);
+        rSTableMetro1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                rSTableMetro1FocusGained(evt);
+            }
+        });
+        rSTableMetro1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rSTableMetro1MouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(rSTableMetro1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lbl_nom_emp)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(103, 103, 103)
+                                        .addComponent(jLabel11)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(materialTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButton4)
+                                        .addGap(97, 97, 97)
+                                        .addComponent(jButton6)))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(materialTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(empleado)
+                                .addGap(35, 35, 35)
+                                .addComponent(registrar)
+                                .addGap(18, 18, 18)
+                                .addComponent(modificar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton5)
+                                .addGap(46, 46, 46)
+                                .addComponent(jLabel2)
+                                .addGap(24, 24, 24)
+                                .addComponent(materialTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 918, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -52,12 +199,279 @@ public class pnlDevolucion extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel7)
-                .addContainerGap(471, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10)
+                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(materialTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(materialTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(registrar)
+                                .addComponent(modificar)
+                                .addComponent(jButton5))
+                            .addComponent(empleado))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbl_nom_emp)
+                .addGap(45, 45, 45)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel11)
+                            .addComponent(materialTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButton4))
+                    .addComponent(jButton6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(13, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void empleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empleadoActionPerformed
+        // TODO add your handling code here:
+        JFrame frame = new JFrame();
+        dlgEmpleados empleados = new dlgEmpleados(frame, true);
+        empleados.setVisible(true);
+        this.lbl_id.setVisible(false);
+        this.lbl_nom_emp.setVisible(false);
+        this.validate();
+    }//GEN-LAST:event_empleadoActionPerformed
+
+    private void registrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarActionPerformed
+        // TODO add your handling code here:
+        try {
+            String costo_promedio, existencia;
+            String boton = registrar.getText().toString();
+            String nombre = materialTextField1.getText().toString().trim();
+            String unidad_medida = materialTextField2.getText().toString().trim();
+            String stock_minimo = materialTextField3.getText().toString().trim();
+            String stock_actual = materialTextField4.getText().toString().trim();
+            costo_promedio = (materialTextField5.getText().toString().trim());
+            existencia = (materialTextField6.getText().toString().trim());
+            this.updateUI();
+
+            if (boton.equalsIgnoreCase("Cancelar")) {
+                this.limpiar();
+                this.registrar.setText("Registrar");
+                this.lbl_id.setText("0");
+                this.ocultar_boton(true);
+            } else {
+
+                if (nombre.equalsIgnoreCase("") || costo_promedio.equalsIgnoreCase("")
+                    || stock_minimo.equalsIgnoreCase("") || stock_actual.equalsIgnoreCase("")
+                    || existencia.equalsIgnoreCase("")
+                    || unidad_medida.equalsIgnoreCase("")) {
+                    alerts.error(StematicConstants.M_OBLIGATE);
+                } else {
+                    int id_emp = Integer.parseInt(id);
+                    if (id_emp == 0) {
+                        int axu = Integer.parseInt(lbl_id.getText());
+                        alerts.error(StematicConstants.M_EMPLEADO);
+                    } else {
+                        compraDTO = new AlmacenDTO(id_emp, 0, nombre, Double.valueOf(unidad_medida),
+                            Integer.parseInt(stock_minimo), Integer.parseInt(stock_actual),
+                            Double.valueOf(costo_promedio), existencia);
+                        int response = icompra.insertar_almacen(compraDTO);
+                        if (response == 1) {
+                            limpiar();
+                            this.obtener_alamcenes();
+                            alerts.success(StematicConstants.M_INSERT_SUCCESS);
+                        } else {
+                            alerts.error(StematicConstants.M_ERROR);
+                        }
+                    }
+                }
+            }
+        } catch (NumberFormatException e) {
+            alerts.error("Formato incorrecto de numero");
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_registrarActionPerformed
+
+    private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
+        // TODO add your handling code here:
+        try {
+            String costo_promedio, existencia;
+            String boton = registrar.getText().toString();
+            String nombre = materialTextField1.getText().toString().trim();
+            String unidad_medida = materialTextField2.getText().toString().trim();
+            String stock_minimo = materialTextField3.getText().toString().trim();
+            String stock_actual = materialTextField4.getText().toString().trim();
+            costo_promedio = (materialTextField5.getText().toString().trim());
+            existencia = (materialTextField6.getText().toString().trim());
+
+            if (nombre.equalsIgnoreCase("") || costo_promedio.equalsIgnoreCase("")
+                || stock_minimo.equalsIgnoreCase("") || stock_actual.equalsIgnoreCase("")
+                || existencia.equalsIgnoreCase("")
+                || unidad_medida.equalsIgnoreCase("")) {
+                alerts.error(StematicConstants.M_OBLIGATE);
+            } else {
+                int id_almacen = Integer.parseInt(lbl_id.getText());
+                if (id_almacen == 0) {
+                    alerts.error(StematicConstants.M_OBLIGATE_ID);
+                } else {
+                    compraDTO = new AlmacenDTO(0, id_almacen, nombre, Double.valueOf(unidad_medida),
+                        Integer.parseInt(stock_minimo), Integer.parseInt(stock_actual),
+                        Double.valueOf(costo_promedio), existencia);
+                    int response = icompra.update_almacen(compraDTO);
+                    if (response == 1) {
+                        limpiar();
+                        this.obtener_alamcenes();
+                        alerts.success(StematicConstants.M_UPDATE_SUCCESS);
+                    } else {
+                        alerts.error(StematicConstants.M_ERROR);
+                    }
+                }
+
+            }
+        } catch (NumberFormatException e) {
+            alerts.error("Formato incorrecto de numero");
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_modificarActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        try {
+            String id = lbl_id.getText();
+            if (id.equalsIgnoreCase("0")) {
+                alerts.error(StematicConstants.M_OBLIGATE_ID);
+            } else {
+                compraDTO = new AlmacenDTO();
+                compraDTO.setmId_Articulo(Integer.parseInt(id));
+                int response = icompra.eliminar_almacen(compraDTO);
+                if (response == 1) {
+                    this.limpiar();
+                    this.ocultar_boton(true);
+                    this.registrar.setText("Registrar");
+                    this.obtener_alamcenes();
+                    alerts.success(StematicConstants.M_DELETE_SUCCESS);
+                } else {
+                    alerts.error(StematicConstants.M_ERROR);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        try {
+            String buscar = materialTextField7.getText();
+
+            if (buscar.equalsIgnoreCase("")) {
+                alerts.error(StematicConstants.M_OBLIGATE_SEARCH);
+
+            } else {
+                compraDTO = new AlmacenDTO();
+                compraDTO.setmArticulo(buscar);
+                model = new DefaultTableModel();
+                model = icompra.get_almacen(compraDTO);
+                llenarTabla(this.encabezado());
+                this.ocultar_columnas();
+                this.materialTextField7.setText("");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        // TODO add your handling code here:
+        try {
+            this.obtener_alamcenes();
+        } catch (Exception e) {
+
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void rSTableMetro1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_rSTableMetro1FocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rSTableMetro1FocusGained
+
+    private void rSTableMetro1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rSTableMetro1MouseClicked
+        // TODO add your handling code here:
+        int rowIndex = rSTableMetro1.getSelectedRow();
+        this.empleado.setVisible(false);
+        if (evt.getClickCount() == 1) {
+            int colIndex = rSTableMetro1.getSelectedColumn();
+            String celda = rSTableMetro1.getValueAt(rowIndex, colIndex).toString();
+            rSTableMetro1.setToolTipText(celda);
+        } else if (evt.getClickCount() == 2) {
+
+            String id = rSTableMetro1.getValueAt(rowIndex, 1).toString();
+            this.ocultar_boton(false);
+            this.pasar_columna_caja(materialTextField1, rSTableMetro1.getValueAt(rowIndex, 2).toString());
+            this.pasar_columna_caja(materialTextField2, rSTableMetro1.getValueAt(rowIndex, 4).toString());
+            this.pasar_columna_caja(materialTextField3, rSTableMetro1.getValueAt(rowIndex, 5).toString());
+            this.pasar_columna_caja(materialTextField4, rSTableMetro1.getValueAt(rowIndex, 6).toString());
+            this.pasar_columna_caja(materialTextField5, rSTableMetro1.getValueAt(rowIndex, 7).toString());
+            this.pasar_columna_caja(materialTextField6, rSTableMetro1.getValueAt(rowIndex, 8).toString());
+            lbl_id.setText(id);
+            registrar.setText("Cancelar");
+
+        }
+    }//GEN-LAST:event_rSTableMetro1MouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton empleado;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooser2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane2;
+    public static javax.swing.JLabel lbl_nom_emp;
+    private principal.MaterialTextField materialTextField1;
+    private principal.MaterialTextField materialTextField10;
+    private principal.MaterialTextField materialTextField2;
+    private javax.swing.JButton modificar;
+    private rojerusan.RSTableMetro rSTableMetro1;
+    private javax.swing.JButton registrar;
     // End of variables declaration//GEN-END:variables
 }

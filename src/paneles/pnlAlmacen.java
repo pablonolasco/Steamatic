@@ -428,6 +428,7 @@ public class pnlAlmacen extends javax.swing.JPanel implements IMetodosFormulario
                     if (response == 1) {
                         limpiar();
                         this.obtener_alamcenes();
+                        this.ocultar_boton(true);
                         alerts.success(StematicConstants.M_UPDATE_SUCCESS);
                     } else {
                         alerts.error(StematicConstants.M_ERROR);
