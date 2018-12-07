@@ -13,10 +13,11 @@ import java.util.Date;
  */
 public class SalidaDTO implements Serializable {
 
+    private int mId_Salida;
     private int mId_Operaciones;
     private int mId_Articulo;
-    private Date mFecha_Salida;
-    private Date mFecha_Servicio;
+    private String mFecha_Salida;
+    private String mFecha_Servicio;
     private String mEmpleado_Operaciones;
     private String mServicio;
     private String mArticulos_Entregados;
@@ -25,7 +26,8 @@ public class SalidaDTO implements Serializable {
     public SalidaDTO() {
     }
 
-    public SalidaDTO(int mId_Operaciones, int mId_Articulo, Date mFecha_Salida, Date mFecha_Servicio, String mEmpleado_Operaciones, String mServicio, String mArticulos_Entregados, int mTotal_Entregados) {
+    public SalidaDTO(int mId_Salida,int mId_Operaciones, int mId_Articulo,String mEmpleado_Operaciones, String mServicio, String mArticulos_Entregados, int mTotal_Entregados) {
+        this.mId_Salida = mId_Salida;
         this.mId_Operaciones = mId_Operaciones;
         this.mId_Articulo = mId_Articulo;
         this.mFecha_Salida = mFecha_Salida;
@@ -36,6 +38,15 @@ public class SalidaDTO implements Serializable {
         this.mTotal_Entregados = mTotal_Entregados;
     }
 
+    public int getmId_Salida() {
+        return mId_Salida;
+    }
+
+    public void setmId_Salida(int mId_Salida) {
+        this.mId_Salida = mId_Salida;
+    }
+
+    
     public int getmId_Operaciones() {
         return mId_Operaciones;
     }
@@ -52,19 +63,19 @@ public class SalidaDTO implements Serializable {
         this.mId_Articulo = mId_Articulo;
     }
 
-    public Date getmFecha_Salida() {
+    public String getmFecha_Salida() {
         return mFecha_Salida;
     }
 
-    public void setmFecha_Salida(Date mFecha_Salida) {
+    public void setmFecha_Salida(String mFecha_Salida) {
         this.mFecha_Salida = mFecha_Salida;
     }
 
-    public Date getmFecha_Servicio() {
+    public String getmFecha_Servicio() {
         return mFecha_Servicio;
     }
 
-    public void setmFecha_Servicio(Date mFecha_Servicio) {
+    public void setmFecha_Servicio(String mFecha_Servicio) {
         this.mFecha_Servicio = mFecha_Servicio;
     }
 

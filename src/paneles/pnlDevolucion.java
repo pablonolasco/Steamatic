@@ -5,17 +5,78 @@
  */
 package paneles;
 
+import dialogs.dlgAlmacenes;
+import dialogs.dlgOperaciones;
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import login.frmDashboard;
+import steamatic.dao.AlmacenDAO;
+import steamatic.dao.DevolucionDAO;
+import steamatic.interfaces.IAlmacen;
+import steamatic.interfaces.IDevolucion;
+import steamatic.interfaces.IMetodosFormulario;
+import steamatic.model.dto.AlmacenDTO;
+import steamatic.model.dto.DevolucionDTO;
+import steamatic.model.dto.EmpleadoDTO;
+import steamatic.utils.Alerts;
+import steamatic.utils.StematicConstants;
+
 /**
  *
- * @author RojeruSan
  */
-public class pnlDevolucion extends javax.swing.JPanel {
+public class pnlDevolucion extends javax.swing.JPanel implements IMetodosFormulario {
 
     /**
      * Creates new form pnlHome
      */
+    private Alerts alerts = new Alerts();
+    private DevolucionDTO devolucionDTO;
+    private IDevolucion iDevolucion = new DevolucionDAO();
+    private Vector encabezado = new Vector();
+    private DefaultTableModel model = null;
+    public static String id;
+    public static String id_op;
+    public static String stock_almacen;
+
     public pnlDevolucion() {
         initComponents();
+        this.limpiar();
+        this.modificar.setVisible(false);
+        this.lbl_id.setVisible(false);
+        this.lbl_id_emp.setVisible(false);
+        this.obtener_devoluciones();
+        this.ocultar_boton(true);
+        this.id = frmDashboard.lbl_id.getText();
+
+    }
+
+    private void obtener_devoluciones() {
+        try {
+            model = new DefaultTableModel();
+            model = iDevolucion.get_devolucions();
+
+            if (model != null) {
+                llenarTabla(this.encabezado());
+                this.ocultar_columnas();
+
+            }
+
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        }
+
     }
 
     /**
@@ -34,8 +95,8 @@ public class pnlDevolucion extends javax.swing.JPanel {
         jDateChooser2 = new com.toedter.calendar.JDateChooser();
         jLabel1 = new javax.swing.JLabel();
         materialTextField1 = new principal.MaterialTextField();
-        empleado = new javax.swing.JButton();
-        lbl_nom_emp = new javax.swing.JLabel();
+        dlgAlmacen = new javax.swing.JButton();
+        lbl_nom_arti = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         materialTextField2 = new principal.MaterialTextField();
         registrar = new javax.swing.JButton();
@@ -47,6 +108,10 @@ public class pnlDevolucion extends javax.swing.JPanel {
         jButton6 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         rSTableMetro1 = new rojerusan.RSTableMetro();
+        lbl_id = new javax.swing.JLabel();
+        lbl_id_emp = new javax.swing.JLabel();
+        lbl_nom_operaciones = new javax.swing.JLabel();
+        dlgOperacion = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -63,14 +128,14 @@ public class pnlDevolucion extends javax.swing.JPanel {
 
         jLabel1.setText("Total devuelto:");
 
-        empleado.setText("Articulo");
-        empleado.addActionListener(new java.awt.event.ActionListener() {
+        dlgAlmacen.setText("Articulo");
+        dlgAlmacen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                empleadoActionPerformed(evt);
+                dlgAlmacenActionPerformed(evt);
             }
         });
 
-        lbl_nom_emp.setText("jLabel1");
+        lbl_nom_arti.setText("Articulo");
 
         jLabel2.setText("Articulo devuelto:");
 
@@ -140,6 +205,19 @@ public class pnlDevolucion extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(rSTableMetro1);
 
+        lbl_id.setText("0");
+
+        lbl_id_emp.setText("0");
+
+        lbl_nom_operaciones.setText("Operacion");
+
+        dlgOperacion.setText("Operacion");
+        dlgOperacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dlgOperacionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -153,16 +231,15 @@ public class pnlDevolucion extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lbl_nom_emp)
+                                    .addComponent(lbl_nom_arti)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(103, 103, 103)
-                                        .addComponent(jLabel11)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(materialTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(dlgOperacion)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton4)
-                                        .addGap(97, 97, 97)
-                                        .addComponent(jButton6)))
+                                        .addComponent(lbl_nom_operaciones)))
+                                .addGap(97, 97, 97)
+                                .addComponent(lbl_id)
+                                .addGap(162, 162, 162)
+                                .addComponent(lbl_id_emp)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel9)
@@ -177,7 +254,7 @@ public class pnlDevolucion extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(materialTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(empleado)
+                                .addComponent(dlgAlmacen)
                                 .addGap(35, 35, 35)
                                 .addComponent(registrar)
                                 .addGap(18, 18, 18)
@@ -187,7 +264,17 @@ public class pnlDevolucion extends javax.swing.JPanel {
                                 .addGap(46, 46, 46)
                                 .addComponent(jLabel2)
                                 .addGap(24, 24, 24)
-                                .addComponent(materialTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(materialTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel11)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(materialTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton4)
+                                .addGap(139, 139, 139)
+                                .addComponent(jButton6)
+                                .addGap(27, 27, 27))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 918, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -221,89 +308,136 @@ public class pnlDevolucion extends javax.swing.JPanel {
                                 .addComponent(registrar)
                                 .addComponent(modificar)
                                 .addComponent(jButton5))
-                            .addComponent(empleado))))
+                            .addComponent(dlgAlmacen))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbl_nom_emp)
-                .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel11)
-                            .addComponent(materialTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jButton4))
-                    .addComponent(jButton6))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lbl_id)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lbl_id_emp, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(47, 47, 47)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel11)
+                                .addComponent(materialTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jButton4)
+                                .addComponent(jButton6))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lbl_nom_arti)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(dlgOperacion)
+                            .addComponent(lbl_nom_operaciones))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void empleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empleadoActionPerformed
+    private void dlgAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dlgAlmacenActionPerformed
         // TODO add your handling code here:
         JFrame frame = new JFrame();
-        dlgEmpleados empleados = new dlgEmpleados(frame, true);
+        dlgAlmacenes empleados = new dlgAlmacenes(frame, true, "d");
         empleados.setVisible(true);
         this.lbl_id.setVisible(false);
-        this.lbl_nom_emp.setVisible(false);
+
         this.validate();
-    }//GEN-LAST:event_empleadoActionPerformed
+    }//GEN-LAST:event_dlgAlmacenActionPerformed
 
     private void registrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarActionPerformed
         // TODO add your handling code here:
-        try {
-            String costo_promedio, existencia;
-            String boton = registrar.getText().toString();
-            String nombre = materialTextField1.getText().toString().trim();
-            String unidad_medida = materialTextField2.getText().toString().trim();
-            String stock_minimo = materialTextField3.getText().toString().trim();
-            String stock_actual = materialTextField4.getText().toString().trim();
-            costo_promedio = (materialTextField5.getText().toString().trim());
-            existencia = (materialTextField6.getText().toString().trim());
-            this.updateUI();
+        String fecha_salida = "";
+        String fecha_entrada = "";
+        String nombre_boton = registrar.getText().toString();
+        String entrada = (jDateChooser1.getDate() != null) ? jDateChooser1.getDate().toString() : "";
+        String salida = (jDateChooser2.getDate() != null) ? jDateChooser2.getDate().toString() : "";
+        if (nombre_boton.equalsIgnoreCase("Cancelar")) {
+            this.limpiar();
+            this.registrar.setText("Registrar");
+            this.lbl_id.setText("0");
+            this.ocultar_boton(true);
+            this.lbl_nom_arti.setText("Articulo");
+            this.lbl_nom_operaciones.setText("Operacion");
 
-            if (boton.equalsIgnoreCase("Cancelar")) {
-                this.limpiar();
-                this.registrar.setText("Registrar");
-                this.lbl_id.setText("0");
-                this.ocultar_boton(true);
+        } else {
+            if (salida.equalsIgnoreCase("")) {
+                alerts.error(StematicConstants.M_OBLIGATE);
+
             } else {
 
-                if (nombre.equalsIgnoreCase("") || costo_promedio.equalsIgnoreCase("")
-                    || stock_minimo.equalsIgnoreCase("") || stock_actual.equalsIgnoreCase("")
-                    || existencia.equalsIgnoreCase("")
-                    || unidad_medida.equalsIgnoreCase("")) {
+                int anio;
+                Calendar calendar = Calendar.getInstance();
+
+                calendar.setTime(jDateChooser1.getDate());
+                int dia = calendar.get(Calendar.DATE);
+                int mes = calendar.get(Calendar.MONTH);
+
+                anio = calendar.get(Calendar.YEAR);
+                fecha_entrada = String.valueOf(anio + "-" + (mes + 1) + "-" + dia);
+
+                int anio2;
+                Calendar calendar2 = Calendar.getInstance();
+
+                calendar.setTime(jDateChooser2.getDate());
+                int dia2 = calendar.get(Calendar.DATE);
+                int mes2 = calendar.get(Calendar.MONTH);
+
+                anio2 = calendar2.get(Calendar.YEAR);
+                fecha_salida = String.valueOf(anio2 + "-" + (mes2 + 1) + "-" + dia2);
+
+                String total_dev = materialTextField1.getText();
+                String art_dev = materialTextField2.getText();
+
+                if (total_dev.equalsIgnoreCase("") || art_dev.equalsIgnoreCase("")
+                        || fecha_entrada.equalsIgnoreCase("")
+                        || fecha_salida.equalsIgnoreCase("")) {
+
                     alerts.error(StematicConstants.M_OBLIGATE);
+
                 } else {
-                    int id_emp = Integer.parseInt(id);
-                    if (id_emp == 0) {
-                        int axu = Integer.parseInt(lbl_id.getText());
-                        alerts.error(StematicConstants.M_EMPLEADO);
-                    } else {
-                        compraDTO = new AlmacenDTO(id_emp, 0, nombre, Double.valueOf(unidad_medida),
-                            Integer.parseInt(stock_minimo), Integer.parseInt(stock_actual),
-                            Double.valueOf(costo_promedio), existencia);
-                        int response = icompra.insertar_almacen(compraDTO);
-                        if (response == 1) {
-                            limpiar();
-                            this.obtener_alamcenes();
-                            alerts.success(StematicConstants.M_INSERT_SUCCESS);
-                        } else {
-                            alerts.error(StematicConstants.M_ERROR);
+
+                    int rows_stock = Integer.parseInt(stock_almacen);
+                    if (rows_stock > Integer.parseInt(total_dev)) {
+                        devolucionDTO = new DevolucionDTO();
+                        devolucionDTO.setmId_Operaciones(Integer.parseInt(id_op));
+                        devolucionDTO.setmId_Articulo(Integer.parseInt(id));
+                        devolucionDTO.setmFecha_Salida(fecha_salida);
+                        devolucionDTO.setmFecha_Entrada(fecha_entrada);
+                        devolucionDTO.setmArticulo_Devuelto(art_dev);
+                        devolucionDTO.setmTotal_Devuelto(Integer.parseInt(total_dev));
+                        try {
+                            int response;
+                            response = iDevolucion.insertar_devolucion(devolucionDTO);
+                            if (response == 1) {
+                                this.limpiar();
+                                this.obtener_devoluciones();
+                                this.lbl_nom_arti.setText("Articulo");
+                                this.lbl_nom_operaciones.setText("Operacion");
+
+                                alerts.success(StematicConstants.M_INSERT_SUCCESS);
+
+                            } else {
+                                alerts.error(StematicConstants.M_ERROR);
+
+                            }
+
+                        } catch (SQLException ex) {
+                            System.err.println("message:" + ex.getMessage());
+                            ex.printStackTrace();
                         }
+
+                    } else {
+                        alerts.error("No cuenta con suficiente stock");
+
                     }
+
                 }
             }
-        } catch (NumberFormatException e) {
-            alerts.error("Formato incorrecto de numero");
-            System.err.println("message:" + e.getMessage());
-            e.printStackTrace();
-        } catch (SQLException e) {
-            System.err.println("message:" + e.getMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.err.println("message:" + e.getMessage());
-            e.printStackTrace();
         }
+
     }//GEN-LAST:event_registrarActionPerformed
 
     private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
@@ -311,30 +445,21 @@ public class pnlDevolucion extends javax.swing.JPanel {
         try {
             String costo_promedio, existencia;
             String boton = registrar.getText().toString();
-            String nombre = materialTextField1.getText().toString().trim();
-            String unidad_medida = materialTextField2.getText().toString().trim();
-            String stock_minimo = materialTextField3.getText().toString().trim();
-            String stock_actual = materialTextField4.getText().toString().trim();
-            costo_promedio = (materialTextField5.getText().toString().trim());
-            existencia = (materialTextField6.getText().toString().trim());
+            String total_dev = materialTextField1.getText().toString().trim();
+            String art_dev = materialTextField2.getText().toString().trim();
 
-            if (nombre.equalsIgnoreCase("") || costo_promedio.equalsIgnoreCase("")
-                || stock_minimo.equalsIgnoreCase("") || stock_actual.equalsIgnoreCase("")
-                || existencia.equalsIgnoreCase("")
-                || unidad_medida.equalsIgnoreCase("")) {
+            if (total_dev.equalsIgnoreCase("") || art_dev.equalsIgnoreCase("")) {
                 alerts.error(StematicConstants.M_OBLIGATE);
             } else {
                 int id_almacen = Integer.parseInt(lbl_id.getText());
                 if (id_almacen == 0) {
                     alerts.error(StematicConstants.M_OBLIGATE_ID);
                 } else {
-                    compraDTO = new AlmacenDTO(0, id_almacen, nombre, Double.valueOf(unidad_medida),
-                        Integer.parseInt(stock_minimo), Integer.parseInt(stock_actual),
-                        Double.valueOf(costo_promedio), existencia);
-                    int response = icompra.update_almacen(compraDTO);
+                    devolucionDTO = new DevolucionDTO();
+                    int response = iDevolucion.update_devolucion(devolucionDTO);
                     if (response == 1) {
                         limpiar();
-                        this.obtener_alamcenes();
+                        this.obtener_devoluciones();
                         alerts.success(StematicConstants.M_UPDATE_SUCCESS);
                     } else {
                         alerts.error(StematicConstants.M_ERROR);
@@ -362,14 +487,16 @@ public class pnlDevolucion extends javax.swing.JPanel {
             if (id.equalsIgnoreCase("0")) {
                 alerts.error(StematicConstants.M_OBLIGATE_ID);
             } else {
-                compraDTO = new AlmacenDTO();
-                compraDTO.setmId_Articulo(Integer.parseInt(id));
-                int response = icompra.eliminar_almacen(compraDTO);
+                devolucionDTO = new DevolucionDTO();
+                devolucionDTO.setmId_dev(Integer.parseInt(id));
+                int response = iDevolucion.eliminar_devolucion(devolucionDTO);
                 if (response == 1) {
                     this.limpiar();
                     this.ocultar_boton(true);
                     this.registrar.setText("Registrar");
-                    this.obtener_alamcenes();
+                    this.lbl_nom_arti.setText("Articulo");
+                    this.lbl_nom_operaciones.setText("Operacion");
+                    this.obtener_devoluciones();
                     alerts.success(StematicConstants.M_DELETE_SUCCESS);
                 } else {
                     alerts.error(StematicConstants.M_ERROR);
@@ -387,19 +514,19 @@ public class pnlDevolucion extends javax.swing.JPanel {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         try {
-            String buscar = materialTextField7.getText();
+            String buscar = materialTextField10.getText();
 
             if (buscar.equalsIgnoreCase("")) {
                 alerts.error(StematicConstants.M_OBLIGATE_SEARCH);
 
             } else {
-                compraDTO = new AlmacenDTO();
-                compraDTO.setmArticulo(buscar);
+                devolucionDTO = new DevolucionDTO();
+                devolucionDTO.setmArticulo_Devuelto(buscar);
                 model = new DefaultTableModel();
-                model = icompra.get_almacen(compraDTO);
+                model = iDevolucion.get_devolucion(devolucionDTO);
                 llenarTabla(this.encabezado());
                 this.ocultar_columnas();
-                this.materialTextField7.setText("");
+                this.materialTextField10.setText("");
             }
 
         } catch (SQLException e) {
@@ -417,7 +544,7 @@ public class pnlDevolucion extends javax.swing.JPanel {
         // TODO add your handling code here:
         // TODO add your handling code here:
         try {
-            this.obtener_alamcenes();
+            this.obtener_devoluciones();
         } catch (Exception e) {
 
         }
@@ -430,30 +557,37 @@ public class pnlDevolucion extends javax.swing.JPanel {
     private void rSTableMetro1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rSTableMetro1MouseClicked
         // TODO add your handling code here:
         int rowIndex = rSTableMetro1.getSelectedRow();
-        this.empleado.setVisible(false);
+        this.dlgAlmacen.setVisible(false);
         if (evt.getClickCount() == 1) {
             int colIndex = rSTableMetro1.getSelectedColumn();
             String celda = rSTableMetro1.getValueAt(rowIndex, colIndex).toString();
             rSTableMetro1.setToolTipText(celda);
         } else if (evt.getClickCount() == 2) {
 
-            String id = rSTableMetro1.getValueAt(rowIndex, 1).toString();
+            String id = rSTableMetro1.getValueAt(rowIndex, 0).toString();
             this.ocultar_boton(false);
-            this.pasar_columna_caja(materialTextField1, rSTableMetro1.getValueAt(rowIndex, 2).toString());
-            this.pasar_columna_caja(materialTextField2, rSTableMetro1.getValueAt(rowIndex, 4).toString());
-            this.pasar_columna_caja(materialTextField3, rSTableMetro1.getValueAt(rowIndex, 5).toString());
-            this.pasar_columna_caja(materialTextField4, rSTableMetro1.getValueAt(rowIndex, 6).toString());
-            this.pasar_columna_caja(materialTextField5, rSTableMetro1.getValueAt(rowIndex, 7).toString());
-            this.pasar_columna_caja(materialTextField6, rSTableMetro1.getValueAt(rowIndex, 8).toString());
+            this.pasar_columna_caja(materialTextField1, rSTableMetro1.getValueAt(rowIndex, 6).toString());
+            this.pasar_columna_caja(materialTextField2, rSTableMetro1.getValueAt(rowIndex, 5).toString());
             lbl_id.setText(id);
             registrar.setText("Cancelar");
 
         }
     }//GEN-LAST:event_rSTableMetro1MouseClicked
 
+    private void dlgOperacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dlgOperacionActionPerformed
+        // TODO add your handling code here:
+        JFrame frame = new JFrame();
+        dlgOperaciones empleados = new dlgOperaciones(frame, true, "d");
+        empleados.setVisible(true);
+        this.lbl_id.setVisible(false);
+
+        this.validate();
+    }//GEN-LAST:event_dlgOperacionActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton empleado;
+    private javax.swing.JButton dlgAlmacen;
+    private javax.swing.JButton dlgOperacion;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
@@ -466,7 +600,10 @@ public class pnlDevolucion extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane2;
-    public static javax.swing.JLabel lbl_nom_emp;
+    private javax.swing.JLabel lbl_id;
+    public static javax.swing.JLabel lbl_id_emp;
+    public static javax.swing.JLabel lbl_nom_arti;
+    public static javax.swing.JLabel lbl_nom_operaciones;
     private principal.MaterialTextField materialTextField1;
     private principal.MaterialTextField materialTextField10;
     private principal.MaterialTextField materialTextField2;
@@ -474,4 +611,81 @@ public class pnlDevolucion extends javax.swing.JPanel {
     private rojerusan.RSTableMetro rSTableMetro1;
     private javax.swing.JButton registrar;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void limpiar() {
+        materialTextField1.setText("");
+        materialTextField2.setText("");
+
+    }
+
+    @Override
+    public void llenarTabla(Vector vector) {
+        rSTableMetro1.setVisible(true);
+
+        model = new DefaultTableModel(model.getDataVector(), vector) {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return false;  // every cell is not editable
+            }
+        };
+
+        rSTableMetro1.setModel(model);
+
+    }
+
+    @Override
+    public void ocultar_boton(boolean status) {
+        if (status) {
+            modificar.setVisible(!status);
+            jButton5.setVisible(!status);
+        } else {
+            modificar.setVisible(!status);
+            jButton5.setVisible(!status);
+        }
+
+    }
+
+    @Override
+    public void ocultar_columnas() {
+        //oculta columna del idhabitacion
+        rSTableMetro1.getColumnModel().getColumn(0).setMaxWidth(0);
+        rSTableMetro1.getColumnModel().getColumn(0).setMinWidth(0);
+        rSTableMetro1.getColumnModel().getColumn(0).setPreferredWidth(0);
+
+        rSTableMetro1.getColumnModel().getColumn(1).setMaxWidth(0);
+        rSTableMetro1.getColumnModel().getColumn(1).setMinWidth(0);
+        rSTableMetro1.getColumnModel().getColumn(1).setPreferredWidth(0);
+
+        rSTableMetro1.getColumnModel().getColumn(2).setMaxWidth(0);
+        rSTableMetro1.getColumnModel().getColumn(2).setMinWidth(0);
+        rSTableMetro1.getColumnModel().getColumn(2).setPreferredWidth(0);
+
+    }
+
+    @Override
+    public void pasar_columna_caja(JTextField field, String valor) {
+        field.setText(valor);
+
+    }
+
+    @Override
+    public Vector encabezado() {
+
+        try {
+            encabezado.clear();
+            encabezado.add("Id_Dev");
+            encabezado.add("Id_Operacion");
+            encabezado.add("Id_Articulo");
+            encabezado.add("Fecha_Salida");
+            encabezado.add("Fecha_Entrada");
+            encabezado.add("Articulo");
+            encabezado.add("Total_Devuelto");
+        } catch (Exception e) {
+            System.err.println("vector:" + e.getMessage());
+            e.printStackTrace();
+        }
+        return encabezado;
+
+    }
 }

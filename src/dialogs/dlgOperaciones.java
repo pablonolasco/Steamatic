@@ -10,40 +10,50 @@ import java.util.Vector;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import paneles.pnlAlmacen;
+import paneles.pnlDevolucion;
+import paneles.pnlSalida;
+import steamatic.dao.AlmacenDAO;
 import steamatic.dao.EmpleadoDAO;
+import steamatic.dao.OperacionDAO;
+import steamatic.interfaces.IAlmacen;
 import steamatic.interfaces.IEmpleado;
 import steamatic.interfaces.IMetodosFormulario;
+import steamatic.interfaces.IOperacion;
+import steamatic.model.dto.AlmacenDTO;
 import steamatic.model.dto.EmpleadoDTO;
+import steamatic.model.dto.OperacionDTO;
 import steamatic.utils.Alerts;
 import steamatic.utils.StematicConstants;
 
 /**
  *
  */
-public class dlgEmpleados extends javax.swing.JDialog implements IMetodosFormulario {
+public class dlgOperaciones extends javax.swing.JDialog implements IMetodosFormulario {
 
     /**
-     * Creates new form dlgEmpleados
+     * Creates new form dlgAlmacenes
      */
     private Alerts alerts = new Alerts();
-    private IEmpleado iEmpleado = new EmpleadoDAO();
+    private IOperacion iOperacion = new OperacionDAO();
     private DefaultTableModel model = null;
     private Vector encabezado = new Vector();
     private Alerts mensajes = new Alerts();
+    private String tipo;
 
-    public dlgEmpleados(java.awt.Frame parent, boolean modal) {
+    public dlgOperaciones(java.awt.Frame parent, boolean modal, String tipo) {
         super(parent, modal);
         initComponents();
+        this.tipo=tipo;
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        obtener_empleados();
+        obtener_operaciones();
         this.limpiar();
     }
 
-    private void obtener_empleados() {
+    private void obtener_operaciones() {
         try {
             model = new DefaultTableModel();
-            model = iEmpleado.consultar_empleados();
+            model = iOperacion.get_operaciones();
 
             if (model != null) {
                 llenarTabla(this.encabezado());
@@ -86,8 +96,9 @@ public class dlgEmpleados extends javax.swing.JDialog implements IMetodosFormula
         jLabel7.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(128, 128, 131));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/collection.png"))); // NOI18N
-        jLabel7.setText("EMPLEADO");
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/web.png"))); // NOI18N
+        jLabel7.setText("OPERACIONES");
+        jLabel7.setToolTipText("");
 
         jLabel12.setText("Buscar:");
 
@@ -188,11 +199,10 @@ public class dlgEmpleados extends javax.swing.JDialog implements IMetodosFormula
                 mensajes.error(StematicConstants.M_OBLIGATE_SEARCH);
 
             } else {
-                EmpleadoDTO dTO = new EmpleadoDTO();
-                dTO.setmNombre(buscar);
-                dTO.setmApellido_Paterno(buscar);
+                OperacionDTO dTO = new OperacionDTO();
+                dTO.setmEmpleado_Operaciones(buscar);
                 model = new DefaultTableModel();
-                model = iEmpleado.consultar_empleado(dTO);
+                model = iOperacion.get_operacion(dTO);
                 llenarTabla(this.encabezado);
                 this.ocultar_columnas();
                 limpiar();
@@ -211,7 +221,7 @@ public class dlgEmpleados extends javax.swing.JDialog implements IMetodosFormula
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        this.obtener_empleados();
+        this.obtener_operaciones();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void rSTableMetro1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_rSTableMetro1FocusGained
@@ -229,23 +239,33 @@ public class dlgEmpleados extends javax.swing.JDialog implements IMetodosFormula
                 rSTableMetro1.setToolTipText(celda);
             } else if (evt.getClickCount() == 2) {
 
-                String id = rSTableMetro1.getValueAt(rowIndex, 0).toString();
-                String nombre ="Empleado:"+ rSTableMetro1.getValueAt(rowIndex, 1).toString()+
-                        " "+rSTableMetro1.getValueAt(rowIndex, 2).toString()+" "+
-                        rSTableMetro1.getValueAt(rowIndex, 3).toString();
-                pnlAlmacen.lbl_nom_emp.setText(nombre);
-                pnlAlmacen.lbl_id_emp.setText(id);
-                pnlAlmacen.lbl_id_emp.validate();
-                //almacen.updateUI();
-                pnlAlmacen.id=id;
-               
-                dispose();
+                if (tipo.equals("d")) {
+
+                    String id = rSTableMetro1.getValueAt(rowIndex, 0).toString();
+                    String nombre = "Operaciones:" + rSTableMetro1.getValueAt(rowIndex, 1).toString();
+                    pnlDevolucion.lbl_nom_operaciones.setText(nombre);
+                    pnlDevolucion.lbl_id_emp.setText(id);
+                    //almacen.updateUI();
+                    pnlDevolucion.id_op = id;
+
+                    dispose();
+                } else {
+
+                    String id = rSTableMetro1.getValueAt(rowIndex, 0).toString();
+                    String nombre = "Operaciones:" + rSTableMetro1.getValueAt(rowIndex, 1).toString();
+                    pnlSalida.lbl_nom_operaciones.setText(nombre);
+                    pnlSalida.lbl_id_emp.setText(id);
+                    //almacen.updateUI();
+                    pnlSalida.id_op = id;
+
+                    dispose();
+                }
             }
-        }catch(NullPointerException e){
-            System.err.println("message:"+e.getMessage());
+        } catch (NullPointerException e) {
+            System.err.println("message:" + e.getMessage());
             e.printStackTrace();
         } catch (Exception e) {
-            System.err.println("message:"+e.getMessage());
+            System.err.println("message:" + e.getMessage());
             e.printStackTrace();
         }
 
@@ -268,20 +288,23 @@ public class dlgEmpleados extends javax.swing.JDialog implements IMetodosFormula
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(dlgEmpleados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(dlgOperaciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(dlgEmpleados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(dlgOperaciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(dlgEmpleados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(dlgOperaciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(dlgEmpleados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(dlgOperaciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                dlgEmpleados dialog = new dlgEmpleados(new javax.swing.JFrame(), true);
+                dlgOperaciones dialog = new dlgOperaciones(new javax.swing.JFrame(), true, "");
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -346,16 +369,15 @@ public class dlgEmpleados extends javax.swing.JDialog implements IMetodosFormula
 
         try {
             encabezado.clear();
-            encabezado.add("ID");
-            encabezado.add("Nombre");
-            encabezado.add("Paterno");
-            encabezado.add("Materno");
-            encabezado.add("Organismo");
-            encabezado.add("Sexo");
-            encabezado.add("Estado_Civil");
-            encabezado.add("Fecha_Nacimiento");
-            encabezado.add("Direccion");
+            encabezado.add("Id_Proveedores");
+            encabezado.add("Empleado");
+            encabezado.add("Apellidos");
             encabezado.add("Puesto");
+            encabezado.add("Serv_Programados");
+            encabezado.add("Serv_Realizado");
+            encabezado.add("Tiempo");
+            encabezado.add("Costo_Servicio");
+
         } catch (Exception e) {
             System.err.println("vector:" + e.getMessage());
             e.printStackTrace();

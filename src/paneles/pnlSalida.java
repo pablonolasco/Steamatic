@@ -5,17 +5,79 @@
  */
 package paneles;
 
+import dialogs.dlgAlmacenes;
+import dialogs.dlgOperaciones;
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Vector;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import login.frmDashboard;
+import static paneles.pnlDevolucion.id;
+import static paneles.pnlDevolucion.id_op;
+import static paneles.pnlDevolucion.stock_almacen;
+import steamatic.dao.DevolucionDAO;
+import steamatic.dao.SalidaDAO;
+import steamatic.interfaces.IDevolucion;
+import steamatic.interfaces.IMetodosFormulario;
+import steamatic.interfaces.ISalida;
+import steamatic.model.dto.DevolucionDTO;
+import steamatic.model.dto.SalidaDTO;
+import steamatic.utils.Alerts;
+import steamatic.utils.StematicConstants;
+
 /**
  *
  * @author RojeruSan
  */
-public class pnlSalida extends javax.swing.JPanel {
+public class pnlSalida extends javax.swing.JPanel implements IMetodosFormulario {
+
+    private Alerts alerts = new Alerts();
+    private SalidaDTO salidadTO = new SalidaDTO();
+    private ISalida iSalida = new SalidaDAO();
+    private Vector encabezado = new Vector();
+    private DefaultTableModel model = null;
+    public static String id;
+    public static String id_op;
+    public static String stock_almacen;
 
     /**
      * Creates new form pnlHome
      */
     public pnlSalida() {
         initComponents();
+        this.limpiar();
+
+        this.modificar.setVisible(false);
+        this.lbl_id.setVisible(false);
+        this.lbl_id_emp.setVisible(false);
+        this.obtener_salidas();
+        this.ocultar_boton(true);
+        this.id = frmDashboard.lbl_id.getText();
+
+    }
+
+    private void obtener_salidas() {
+        try {
+            model = new DefaultTableModel();
+            model = iSalida.get_salidas();
+
+            if (model != null) {
+                llenarTabla(this.encabezado());
+                this.ocultar_columnas();
+
+            }
+
+        } catch (SQLException e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        } catch (Exception e) {
+            System.err.println("message:" + e.getMessage());
+            e.printStackTrace();
+
+        }
     }
 
     /**
@@ -41,7 +103,6 @@ public class pnlSalida extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         materialTextField4 = new principal.MaterialTextField();
         empleado = new javax.swing.JButton();
-        lbl_nom_emp = new javax.swing.JLabel();
         registrar = new javax.swing.JButton();
         modificar = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
@@ -51,6 +112,11 @@ public class pnlSalida extends javax.swing.JPanel {
         jButton6 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         rSTableMetro1 = new rojerusan.RSTableMetro();
+        lbl_id_emp = new javax.swing.JLabel();
+        lbl_id = new javax.swing.JLabel();
+        lbl_nom_operaciones = new javax.swing.JLabel();
+        lbl_nom_arti = new javax.swing.JLabel();
+        dlgOperacion = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -79,8 +145,6 @@ public class pnlSalida extends javax.swing.JPanel {
                 empleadoActionPerformed(evt);
             }
         });
-
-        lbl_nom_emp.setText("jLabel1");
 
         registrar.setText("Registrar");
         registrar.addActionListener(new java.awt.event.ActionListener() {
@@ -148,6 +212,21 @@ public class pnlSalida extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(rSTableMetro1);
 
+        lbl_id_emp.setText("0");
+
+        lbl_id.setText("0");
+
+        lbl_nom_operaciones.setText("Operacion");
+
+        lbl_nom_arti.setText("Articulo");
+
+        dlgOperacion.setText("Operacion");
+        dlgOperacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dlgOperacionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -159,19 +238,21 @@ public class pnlSalida extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(materialTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(materialTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel9)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                            .addComponent(jLabel4)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(materialTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                            .addComponent(jLabel2)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(materialTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                            .addComponent(jLabel9)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(registrar))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -188,17 +269,24 @@ public class pnlSalida extends javax.swing.JPanel {
                                         .addComponent(materialTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(dlgOperacion)
+                                            .addComponent(empleado))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
-                                                .addComponent(registrar)
-                                                .addGap(18, 18, 18)
+                                                .addComponent(lbl_nom_arti)
+                                                .addGap(263, 263, 263)
+                                                .addComponent(lbl_id)
+                                                .addGap(162, 162, 162)
+                                                .addComponent(lbl_id_emp)
+                                                .addGap(0, 0, Short.MAX_VALUE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(lbl_nom_operaciones)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(modificar)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jButton5))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(empleado)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(lbl_nom_emp)))
-                                        .addGap(0, 0, Short.MAX_VALUE))))))
+                                                .addComponent(jButton5)
+                                                .addGap(131, 131, 131))))))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(141, 141, 141)
                         .addComponent(jLabel11)
@@ -206,9 +294,9 @@ public class pnlSalida extends javax.swing.JPanel {
                         .addComponent(materialTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton4)
-                        .addGap(97, 97, 97)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton6)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(8, 8, 8))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(27, 27, 27)
                         .addComponent(jScrollPane2)))
@@ -236,145 +324,158 @@ public class pnlSalida extends javax.swing.JPanel {
                     .addComponent(materialTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel4)
-                        .addComponent(materialTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(empleado)
-                    .addComponent(lbl_nom_emp))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(registrar)
-                    .addComponent(modificar)
-                    .addComponent(jButton5))
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel11)
-                            .addComponent(materialTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jButton4))
-                    .addComponent(jButton6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(empleado)
+                                .addComponent(lbl_nom_arti))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(lbl_id)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(lbl_id_emp, javax.swing.GroupLayout.Alignment.TRAILING)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 4, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(modificar)
+                                    .addComponent(jButton5))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(dlgOperacion)
+                                    .addComponent(lbl_nom_operaciones))
+                                .addGap(27, 27, 27)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel11)
+                                        .addComponent(materialTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jButton4)
+                                        .addComponent(jButton6))))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(materialTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(registrar)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void empleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empleadoActionPerformed
         // TODO add your handling code here:
         JFrame frame = new JFrame();
-        dlgEmpleados empleados = new dlgEmpleados(frame, true);
+        dlgAlmacenes empleados = new dlgAlmacenes(frame, true, "s");
         empleados.setVisible(true);
         this.lbl_id.setVisible(false);
-        this.lbl_nom_emp.setVisible(false);
+
         this.validate();
     }//GEN-LAST:event_empleadoActionPerformed
 
     private void registrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarActionPerformed
         // TODO add your handling code here:
-        try {
-            String costo_promedio, existencia;
-            String boton = registrar.getText().toString();
-            String nombre = materialTextField1.getText().toString().trim();
-            String unidad_medida = materialTextField2.getText().toString().trim();
-            String stock_minimo = materialTextField3.getText().toString().trim();
-            String stock_actual = materialTextField4.getText().toString().trim();
-            costo_promedio = (materialTextField5.getText().toString().trim());
-            existencia = (materialTextField6.getText().toString().trim());
-            this.updateUI();
+        String fecha_salida = "";
+        String fecha_servicio = "";
+        String nombre_boton = registrar.getText().toString();
+        String servicio = (jDateChooser1.getDate() != null) ? jDateChooser1.getDate().toString() : "";
+        String salida = (jDateChooser2.getDate() != null) ? jDateChooser2.getDate().toString() : "";
+        if (nombre_boton.equalsIgnoreCase("Cancelar")) {
+            this.limpiar();
+            this.registrar.setText("Registrar");
+            this.lbl_id.setText("0");
+            this.ocultar_boton(true);
+            this.lbl_nom_arti.setText("Articulo");
+            this.lbl_nom_operaciones.setText("Operacion");
 
-            if (boton.equalsIgnoreCase("Cancelar")) {
-                this.limpiar();
-                this.registrar.setText("Registrar");
-                this.lbl_id.setText("0");
-                this.ocultar_boton(true);
+        } else {
+            if (salida.equalsIgnoreCase("")) {
+                alerts.error(StematicConstants.M_OBLIGATE);
+
             } else {
 
-                if (nombre.equalsIgnoreCase("") || costo_promedio.equalsIgnoreCase("")
-                    || stock_minimo.equalsIgnoreCase("") || stock_actual.equalsIgnoreCase("")
-                    || existencia.equalsIgnoreCase("")
-                    || unidad_medida.equalsIgnoreCase("")) {
+                int anio;
+                Calendar calendar = Calendar.getInstance();
+
+                calendar.setTime(jDateChooser1.getDate());
+                int dia = calendar.get(Calendar.DATE);
+                int mes = calendar.get(Calendar.MONTH);
+
+                anio = calendar.get(Calendar.YEAR);
+                fecha_servicio = String.valueOf(anio + "-" + (mes + 1) + "-" + dia);
+
+                int anio2;
+                Calendar calendar2 = Calendar.getInstance();
+
+                calendar.setTime(jDateChooser2.getDate());
+                int dia2 = calendar.get(Calendar.DATE);
+                int mes2 = calendar.get(Calendar.MONTH);
+
+                anio2 = calendar2.get(Calendar.YEAR);
+                fecha_salida = String.valueOf(anio2 + "-" + (mes2 + 1) + "-" + dia2);
+
+                String empleado = materialTextField1.getText();
+                String servicio_ = materialTextField2.getText();
+                String articulos = materialTextField3.getText();
+                String total = materialTextField4.getText();
+
+                if (empleado.equalsIgnoreCase("") || servicio.equalsIgnoreCase("")
+                        || fecha_servicio.equalsIgnoreCase("")
+                        || articulos.equalsIgnoreCase("")
+                        || total.equalsIgnoreCase("")
+                        || fecha_salida.equalsIgnoreCase("")) {
+
                     alerts.error(StematicConstants.M_OBLIGATE);
+
                 } else {
-                    int id_emp = Integer.parseInt(id);
-                    if (id_emp == 0) {
-                        int axu = Integer.parseInt(lbl_id.getText());
-                        alerts.error(StematicConstants.M_EMPLEADO);
-                    } else {
-                        compraDTO = new AlmacenDTO(id_emp, 0, nombre, Double.valueOf(unidad_medida),
-                            Integer.parseInt(stock_minimo), Integer.parseInt(stock_actual),
-                            Double.valueOf(costo_promedio), existencia);
-                        int response = icompra.insertar_almacen(compraDTO);
-                        if (response == 1) {
-                            limpiar();
-                            this.obtener_alamcenes();
-                            alerts.success(StematicConstants.M_INSERT_SUCCESS);
-                        } else {
-                            alerts.error(StematicConstants.M_ERROR);
+
+                    int rows_stock = Integer.parseInt(stock_almacen);
+                    if (rows_stock > Integer.parseInt(total)) {
+
+                        salidadTO.setmId_Operaciones(Integer.parseInt(id_op));
+                        salidadTO.setmId_Articulo(Integer.parseInt(id));
+                        salidadTO.setmFecha_Salida(fecha_salida);
+                        salidadTO.setmFecha_Servicio(fecha_servicio);
+                        salidadTO.setmEmpleado_Operaciones(empleado);
+                        salidadTO.setmServicio(servicio_);
+                        salidadTO.setmArticulos_Entregados(articulos);
+                        salidadTO.setmTotal_Entregados(Integer.parseInt(total));
+                        try {
+                            int response;
+                            response = iSalida.insertar_salida(salidadTO);
+                            if (response == 1) {
+                                this.limpiar();
+                                this.obtener_salidas();
+                                alerts.success(StematicConstants.M_INSERT_SUCCESS);
+                                this.lbl_nom_arti.setText("Articulo");
+                                this.lbl_nom_operaciones.setText("Operacion");
+
+                            } else {
+                                alerts.error(StematicConstants.M_ERROR);
+
+                            }
+
+                        } catch (SQLException ex) {
+                            System.err.println("message:" + ex.getMessage());
+                            ex.printStackTrace();
                         }
+
+                    } else {
+                        alerts.error("No cuenta con suficiente stock");
+
                     }
+
                 }
             }
-        } catch (NumberFormatException e) {
-            alerts.error("Formato incorrecto de numero");
-            System.err.println("message:" + e.getMessage());
-            e.printStackTrace();
-        } catch (SQLException e) {
-            System.err.println("message:" + e.getMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.err.println("message:" + e.getMessage());
-            e.printStackTrace();
         }
+
     }//GEN-LAST:event_registrarActionPerformed
 
     private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
         // TODO add your handling code here:
-        try {
-            String costo_promedio, existencia;
-            String boton = registrar.getText().toString();
-            String nombre = materialTextField1.getText().toString().trim();
-            String unidad_medida = materialTextField2.getText().toString().trim();
-            String stock_minimo = materialTextField3.getText().toString().trim();
-            String stock_actual = materialTextField4.getText().toString().trim();
-            costo_promedio = (materialTextField5.getText().toString().trim());
-            existencia = (materialTextField6.getText().toString().trim());
 
-            if (nombre.equalsIgnoreCase("") || costo_promedio.equalsIgnoreCase("")
-                || stock_minimo.equalsIgnoreCase("") || stock_actual.equalsIgnoreCase("")
-                || existencia.equalsIgnoreCase("")
-                || unidad_medida.equalsIgnoreCase("")) {
-                alerts.error(StematicConstants.M_OBLIGATE);
-            } else {
-                int id_almacen = Integer.parseInt(lbl_id.getText());
-                if (id_almacen == 0) {
-                    alerts.error(StematicConstants.M_OBLIGATE_ID);
-                } else {
-                    compraDTO = new AlmacenDTO(0, id_almacen, nombre, Double.valueOf(unidad_medida),
-                        Integer.parseInt(stock_minimo), Integer.parseInt(stock_actual),
-                        Double.valueOf(costo_promedio), existencia);
-                    int response = icompra.update_almacen(compraDTO);
-                    if (response == 1) {
-                        limpiar();
-                        this.obtener_alamcenes();
-                        alerts.success(StematicConstants.M_UPDATE_SUCCESS);
-                    } else {
-                        alerts.error(StematicConstants.M_ERROR);
-                    }
-                }
-
-            }
-        } catch (NumberFormatException e) {
-            alerts.error("Formato incorrecto de numero");
-            System.err.println("message:" + e.getMessage());
-            e.printStackTrace();
-        } catch (SQLException e) {
-            System.err.println("message:" + e.getMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.err.println("message:" + e.getMessage());
-            e.printStackTrace();
-        }
     }//GEN-LAST:event_modificarActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -384,14 +485,15 @@ public class pnlSalida extends javax.swing.JPanel {
             if (id.equalsIgnoreCase("0")) {
                 alerts.error(StematicConstants.M_OBLIGATE_ID);
             } else {
-                compraDTO = new AlmacenDTO();
-                compraDTO.setmId_Articulo(Integer.parseInt(id));
-                int response = icompra.eliminar_almacen(compraDTO);
+                salidadTO.setmId_Salida(Integer.parseInt(id));
+                int response = iSalida.eliminar_salida(salidadTO);
                 if (response == 1) {
                     this.limpiar();
                     this.ocultar_boton(true);
                     this.registrar.setText("Registrar");
-                    this.obtener_alamcenes();
+                    this.lbl_nom_arti.setText("Articulo");
+                    this.lbl_nom_operaciones.setText("Operacion");
+                    this.obtener_salidas();
                     alerts.success(StematicConstants.M_DELETE_SUCCESS);
                 } else {
                     alerts.error(StematicConstants.M_ERROR);
@@ -409,19 +511,18 @@ public class pnlSalida extends javax.swing.JPanel {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         try {
-            String buscar = materialTextField7.getText();
+            String buscar = materialTextField10.getText();
 
             if (buscar.equalsIgnoreCase("")) {
                 alerts.error(StematicConstants.M_OBLIGATE_SEARCH);
 
             } else {
-                compraDTO = new AlmacenDTO();
-                compraDTO.setmArticulo(buscar);
+                salidadTO.setmArticulos_Entregados(buscar);
                 model = new DefaultTableModel();
-                model = icompra.get_almacen(compraDTO);
+                model = iSalida.get_salida(salidadTO);
                 llenarTabla(this.encabezado());
                 this.ocultar_columnas();
-                this.materialTextField7.setText("");
+                this.materialTextField10.setText("");
             }
 
         } catch (SQLException e) {
@@ -433,13 +534,14 @@ public class pnlSalida extends javax.swing.JPanel {
             e.printStackTrace();
 
         }
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
         // TODO add your handling code here:
         try {
-            this.obtener_alamcenes();
+            this.obtener_salidas();
         } catch (Exception e) {
 
         }
@@ -452,29 +554,40 @@ public class pnlSalida extends javax.swing.JPanel {
     private void rSTableMetro1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rSTableMetro1MouseClicked
         // TODO add your handling code here:
         int rowIndex = rSTableMetro1.getSelectedRow();
-        this.empleado.setVisible(false);
+
+        this.modificar.setVisible(false);
         if (evt.getClickCount() == 1) {
             int colIndex = rSTableMetro1.getSelectedColumn();
             String celda = rSTableMetro1.getValueAt(rowIndex, colIndex).toString();
             rSTableMetro1.setToolTipText(celda);
         } else if (evt.getClickCount() == 2) {
 
-            String id = rSTableMetro1.getValueAt(rowIndex, 1).toString();
+            String id = rSTableMetro1.getValueAt(rowIndex, 0).toString();
             this.ocultar_boton(false);
-            this.pasar_columna_caja(materialTextField1, rSTableMetro1.getValueAt(rowIndex, 2).toString());
-            this.pasar_columna_caja(materialTextField2, rSTableMetro1.getValueAt(rowIndex, 4).toString());
-            this.pasar_columna_caja(materialTextField3, rSTableMetro1.getValueAt(rowIndex, 5).toString());
-            this.pasar_columna_caja(materialTextField4, rSTableMetro1.getValueAt(rowIndex, 6).toString());
-            this.pasar_columna_caja(materialTextField5, rSTableMetro1.getValueAt(rowIndex, 7).toString());
-            this.pasar_columna_caja(materialTextField6, rSTableMetro1.getValueAt(rowIndex, 8).toString());
+            this.pasar_columna_caja(materialTextField1, rSTableMetro1.getValueAt(rowIndex, 5).toString());
+            this.pasar_columna_caja(materialTextField2, rSTableMetro1.getValueAt(rowIndex, 6).toString());
+            this.pasar_columna_caja(materialTextField3, rSTableMetro1.getValueAt(rowIndex, 7).toString());
+            this.pasar_columna_caja(materialTextField4, rSTableMetro1.getValueAt(rowIndex, 8).toString());
             lbl_id.setText(id);
             registrar.setText("Cancelar");
 
         }
+
     }//GEN-LAST:event_rSTableMetro1MouseClicked
+
+    private void dlgOperacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dlgOperacionActionPerformed
+        // TODO add your handling code here:
+        JFrame frame = new JFrame();
+        dlgOperaciones empleados = new dlgOperaciones(frame, true, "s");
+        empleados.setVisible(true);
+        this.lbl_id.setVisible(false);
+
+        this.validate();
+    }//GEN-LAST:event_dlgOperacionActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton dlgOperacion;
     private javax.swing.JButton empleado;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
@@ -490,7 +603,10 @@ public class pnlSalida extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane2;
-    public static javax.swing.JLabel lbl_nom_emp;
+    private javax.swing.JLabel lbl_id;
+    public static javax.swing.JLabel lbl_id_emp;
+    public static javax.swing.JLabel lbl_nom_arti;
+    public static javax.swing.JLabel lbl_nom_operaciones;
     private principal.MaterialTextField materialTextField1;
     private principal.MaterialTextField materialTextField10;
     private principal.MaterialTextField materialTextField2;
@@ -500,4 +616,80 @@ public class pnlSalida extends javax.swing.JPanel {
     private rojerusan.RSTableMetro rSTableMetro1;
     private javax.swing.JButton registrar;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void limpiar() {
+        materialTextField1.setText("");
+        materialTextField2.setText("");
+        materialTextField3.setText("");
+        materialTextField4.setText("");
+    }
+
+    @Override
+    public void llenarTabla(Vector vector) {
+        rSTableMetro1.setVisible(true);
+
+        model = new DefaultTableModel(model.getDataVector(), vector) {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return false;  // every cell is not editable
+            }
+        };
+
+        rSTableMetro1.setModel(model);
+
+    }
+
+    @Override
+    public void ocultar_boton(boolean status) {
+        if (status) {
+            modificar.setVisible(!status);
+            jButton5.setVisible(!status);
+        } else {
+            modificar.setVisible(!status);
+            jButton5.setVisible(!status);
+        }
+    }
+
+    @Override
+    public void ocultar_columnas() {
+        //oculta columna del idhabitacion
+        rSTableMetro1.getColumnModel().getColumn(0).setMaxWidth(0);
+        rSTableMetro1.getColumnModel().getColumn(0).setMinWidth(0);
+        rSTableMetro1.getColumnModel().getColumn(0).setPreferredWidth(0);
+
+        rSTableMetro1.getColumnModel().getColumn(1).setMaxWidth(0);
+        rSTableMetro1.getColumnModel().getColumn(1).setMinWidth(0);
+        rSTableMetro1.getColumnModel().getColumn(1).setPreferredWidth(0);
+
+        rSTableMetro1.getColumnModel().getColumn(2).setMaxWidth(0);
+        rSTableMetro1.getColumnModel().getColumn(2).setMinWidth(0);
+        rSTableMetro1.getColumnModel().getColumn(2).setPreferredWidth(0);
+    }
+
+    @Override
+    public void pasar_columna_caja(JTextField field, String valor) {
+        field.setText(valor);
+    }
+
+    @Override
+    public Vector encabezado() {
+
+        try {
+            encabezado.clear();
+            encabezado.add("Id_Dev");
+            encabezado.add("Id_Operacion");
+            encabezado.add("Id_Articulo");
+            encabezado.add("Fecha_Salida");
+            encabezado.add("Fecha_Servicio");
+            encabezado.add("Empleado");
+            encabezado.add("Servicio");
+            encabezado.add("Articulos");
+            encabezado.add("Total_Entregados");
+        } catch (Exception e) {
+            System.err.println("vector:" + e.getMessage());
+            e.printStackTrace();
+        }
+        return encabezado;
+    }
 }

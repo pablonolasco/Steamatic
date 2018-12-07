@@ -15,7 +15,7 @@ public interface ISalida {
   public abstract int insertar_salida(SalidaDTO dTO)throws SQLException;
   public abstract int eliminar_salida(SalidaDTO dTO)throws SQLException;
   public abstract int update_salida(SalidaDTO dTO)throws SQLException;
-  public abstract DefaultTableModel get_salida()throws SQLException;
+  public abstract DefaultTableModel get_salida(SalidaDTO dTO)throws SQLException;
   public abstract DefaultTableModel get_salidas()throws SQLException;
   
 }

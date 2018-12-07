@@ -13,17 +13,21 @@ import java.util.Date;
  */
 public class DevolucionDTO implements Serializable {
 
+    private int mId_dev;
     private int mId_Operaciones;
     private int mId_Articulo;
-    private Date mFecha_Salida;
-    private Date mFecha_Entrada;
+    private String mFecha_Salida;
+    private String mFecha_Entrada;
     private String mArticulo_Devuelto;
     private int mTotal_Devuelto;
 
     public DevolucionDTO() {
     }
 
-    public DevolucionDTO(int mId_Operaciones, int mId_Articulo, Date mFecha_Salida, Date mFecha_Entrada, String mArticulo_Devuelto, int mTotal_Devuelto) {
+    public DevolucionDTO(int mId_dev,int mId_Operaciones, 
+            int mId_Articulo, String mFecha_Salida, String mFecha_Entrada, 
+            String mArticulo_Devuelto, int mTotal_Devuelto) {
+        this.mId_dev = mId_dev;
         this.mId_Operaciones = mId_Operaciones;
         this.mId_Articulo = mId_Articulo;
         this.mFecha_Salida = mFecha_Salida;
@@ -32,6 +36,15 @@ public class DevolucionDTO implements Serializable {
         this.mTotal_Devuelto = mTotal_Devuelto;
     }
 
+    public int getmId_dev() {
+        return mId_dev;
+    }
+
+    public void setmId_dev(int mId_dev) {
+        this.mId_dev = mId_dev;
+    }
+
+    
     public int getmId_Operaciones() {
         return mId_Operaciones;
     }
@@ -48,19 +61,19 @@ public class DevolucionDTO implements Serializable {
         this.mId_Articulo = mId_Articulo;
     }
 
-    public Date getmFecha_Salida() {
+    public String getmFecha_Salida() {
         return mFecha_Salida;
     }
 
-    public void setmFecha_Salida(Date mFecha_Salida) {
+    public void setmFecha_Salida(String mFecha_Salida) {
         this.mFecha_Salida = mFecha_Salida;
     }
 
-    public Date getmFecha_Entrada() {
+    public String getmFecha_Entrada() {
         return mFecha_Entrada;
     }
 
-    public void setmFecha_Entrada(Date mFecha_Entrada) {
+    public void setmFecha_Entrada(String mFecha_Entrada) {
         this.mFecha_Entrada = mFecha_Entrada;
     }
 
@@ -82,8 +95,9 @@ public class DevolucionDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "DevolucionDTO{" + "mId_Operaciones=" + mId_Operaciones + ", mId_Articulo=" + mId_Articulo + ", mFecha_Salida=" + mFecha_Salida + ", mFecha_Entrada=" + mFecha_Entrada + ", mArticulo_Devuelto=" + mArticulo_Devuelto + ", mTotal_Devuelto=" + mTotal_Devuelto + '}';
+        return "DevolucionDTO{" + "mId_dev=" + mId_dev + ", mId_Operaciones=" + mId_Operaciones + ", mId_Articulo=" + mId_Articulo + ", mFecha_Salida=" + mFecha_Salida + ", mFecha_Entrada=" + mFecha_Entrada + ", mArticulo_Devuelto=" + mArticulo_Devuelto + ", mTotal_Devuelto=" + mTotal_Devuelto + '}';
     }
+
     
     
 

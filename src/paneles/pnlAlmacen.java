@@ -5,7 +5,7 @@
  */
 package paneles;
 
-import dialogs.dlgEmpleados;
+import dialogs.dlgAlmacenes;
 import java.sql.SQLException;
 import java.util.Vector;
 import javax.swing.JFrame;
@@ -332,12 +332,7 @@ public class pnlAlmacen extends javax.swing.JPanel implements IMetodosFormulario
 
     private void empleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empleadoActionPerformed
         // TODO add your handling code here:
-        JFrame frame = new JFrame();
-        dlgEmpleados empleados = new dlgEmpleados(frame, true);
-        empleados.setVisible(true);
-        this.lbl_id.setVisible(false);
-        this.lbl_nom_emp.setVisible(false);
-        this.validate();
+      
 
     }//GEN-LAST:event_empleadoActionPerformed
 

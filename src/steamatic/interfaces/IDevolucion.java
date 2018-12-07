@@ -16,7 +16,7 @@ public interface IDevolucion {
   public abstract int insertar_devolucion(DevolucionDTO dTO)throws SQLException;
   public abstract int eliminar_devolucion(DevolucionDTO dTO)throws SQLException;
   public abstract int update_devolucion(DevolucionDTO dTO)throws SQLException;
-  public abstract DefaultTableModel get_devolucion()throws SQLException;
+  public abstract DefaultTableModel get_devolucion(DevolucionDTO dTO)throws SQLException;
   public abstract DefaultTableModel get_devolucions()throws SQLException;
     
 }
